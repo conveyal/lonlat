@@ -10,6 +10,13 @@ module.exports.print = function print (input, fixed) {
   return ll.lng.toFixed(fixed || 5) + ', ' + ll.lat.toFixed(fixed || 5)
 }
 
+module.exports.isEqual = function (latlng1, latlng2, epsilon) {
+  latlng1 = normalize(latlng1)
+  latlng2 = normalize(latlng2)
+  epsilon = epsilon || 0
+  return (Math.abs(latlng1.lat - latlng2.lat) <= epsilon) && (Math.abs(latlng1.lng - latlng2.lng) <= epsilon)
+}
+
 module.exports.toCoordinates = function toCoordinates (input) {
   var ll = normalize(input)
   return [ll.lng, ll.lat]

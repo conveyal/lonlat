@@ -1,6 +1,6 @@
 {
   "name": "lonlng",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Lat/lon normalization cause...**sigh**",
   "main": "index.js",
   "scripts": {
