@@ -1,7 +1,7 @@
 
 module.exports = normalize
 module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
-module.exports.fromLatlng = fromLatlng
+module.exports.fromLatlng = module.exports.fromLeaflet = fromLatlng
 module.exports.fromPoint = fromPoint
 module.exports.fromString = fromString
 
@@ -36,6 +36,12 @@ module.exports.toString = function toString (input) {
   return ll.lng + ',' + ll.lat
 }
 
+module.exports.toLeaflet = function toLeaflet (input) {
+  if (!window.L) throw new Error('Leaflet not found.')
+  var ll = normalize(input)
+  return new window.L.Latlng(ll.lat, ll.lng)
+}
+
 function fromCoordinates (coordinates) {
   return floatize({lng: coordinates[0], lat: coordinates[1]})
 }
@@ -54,7 +60,7 @@ function fromString (str) {
 }
 
 function floatize (latlng) {
-  return {lng: parseFloat(latlng.lng), lat: parseFloat(latlng.lat)}
+  return {lng: parseFloat(latlng.lng || latlng.lon || latlng.longitude), lat: parseFloat(latlng.lat || latlng.latitude)}
 }
 
 function normalize (unknown) {
@@ -62,6 +68,6 @@ function normalize (unknown) {
   if (Array.isArray(unknown)) return fromCoordinates(unknown)
   else if (typeof unknown === 'string') return fromString(unknown)
   else if (unknown.x && unknown.y) return fromPoint(unknown)
-  return floatize({lng: unknown.lng || unknown.lon || unknown.longitude, lat: unknown.lat || unknown.latitude})
+  return floatize(unknown)
 }
 
