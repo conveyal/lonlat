@@ -1,10 +1,10 @@
 {
   "name": "lonlng",
-  "version": "0.0.2",
   "description": "Lat/lon normalization cause...**sigh**",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/conveyal/lonlng/issues"
   },
-  "homepage": "https://github.com/conveyal/lonlng"
+  "homepage": "https://github.com/conveyal/lonlng",
+  "devDependencies": {
+    "semantic-release": "^4.3.5"
+  }
 }
