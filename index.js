@@ -28,7 +28,7 @@ module.exports.toLatlng = function toLatlng (input) {
 
 module.exports.toPoint = function toPoint (input) {
   var ll = normalize(input)
-  return {x: ll.lat, y: ll.lng}
+  return {x: ll.lng, y: ll.lat}
 }
 
 module.exports.toString = function toString (input) {
