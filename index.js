@@ -1,6 +1,6 @@
 
 module.exports = normalize
-module.exports.fromCoordinates = fromCoordinates
+module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
 module.exports.fromLatlng = fromLatlng
 module.exports.fromPoint = fromPoint
 module.exports.fromString = fromString
@@ -17,7 +17,7 @@ module.exports.isEqual = function (latlng1, latlng2, epsilon) {
   return (Math.abs(latlng1.lat - latlng2.lat) <= epsilon) && (Math.abs(latlng1.lng - latlng2.lng) <= epsilon)
 }
 
-module.exports.toCoordinates = function toCoordinates (input) {
+module.exports.toCoordinates = module.exports.toGeoJSON = function toCoordinates (input) {
   var ll = normalize(input)
   return [ll.lng, ll.lat]
 }
