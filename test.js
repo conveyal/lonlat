@@ -2,29 +2,29 @@ const assert = require('assert')
 const ll = require('./')
 
 const lat = 38.13234
-const lng = 70.01232
-const latlng = {lat, lng}
-const point = {x: lng, y: lat}
-const coordinates = [lng, lat]
-const str = `${lng},${lat}`
+const lon = 70.01232
+const latlon = {lat, lon, lng: lon}
+const point = {x: lon, y: lat}
+const coordinates = [lon, lat]
+const str = `${lon},${lat}`
 
 const pairs = [
   // normalization
-  [latlng, ll(latlng)],
-  [latlng, ll(point)],
-  [latlng, ll(coordinates)],
-  [latlng, ll(str)],
+  [latlon, ll(latlon)],
+  [latlon, ll(point)],
+  [latlon, ll(coordinates)],
+  [latlon, ll(str)],
 
   // convert to type, normalizes to `latlng` first in each function
-  [ll.toCoordinates(latlng), coordinates],
-  [ll.toPoint(latlng), point],
-  [ll.toString(latlng), str],
+  [ll.toCoordinates(latlon), coordinates],
+  [ll.toPoint(latlon), point],
+  [ll.toString(latlon), str],
 
   // if the type is known, use the specific convert function directly
-  [latlng, ll.fromLatlng(latlng)],
-  [latlng, ll.fromCoordinates(coordinates)],
-  [latlng, ll.fromPoint(point)],
-  [latlng, ll.fromString(str)]
+  [latlon, ll.fromLatlng(latlon)],
+  [latlon, ll.fromCoordinates(coordinates)],
+  [latlon, ll.fromPoint(point)],
+  [latlon, ll.fromString(str)]
 ]
 
 pairs.forEach((pair) => assert.deepEqual(pair[0], pair[1]))
