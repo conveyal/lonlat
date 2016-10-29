@@ -23,7 +23,7 @@ If you must convert it to a string, put it in the following format:
 
 ```js
 const assert = require('assert')
-const ll = require('./')
+const ll = require('@conveyal/lonlat')
 
 const lat = 38.13234
 const lon = 70.01232
