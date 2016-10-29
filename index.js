@@ -1,7 +1,7 @@
 
 module.exports = normalize
 module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
-module.exports.fromLatlng = module.exports.fromLatlon = module.exports.fromLeaflet = fromLatlon
+module.exports.fromLatlng = module.exports.fromLeaflet = fromLatlng
 module.exports.fromPoint = fromPoint
 module.exports.fromString = fromString
 
@@ -10,20 +10,16 @@ module.exports.print = function print (input, fixed) {
   return ll.lon.toFixed(fixed || 5) + ', ' + ll.lat.toFixed(fixed || 5)
 }
 
-module.exports.isEqual = function (latlon1, latlon2, epsilon) {
-  latlon1 = normalize(latlon1)
-  latlon2 = normalize(latlon2)
+module.exports.isEqual = function (lonlat1, lonlat2, epsilon) {
+  lonlat1 = normalize(lonlat1)
+  lonlat2 = normalize(lonlat2)
   epsilon = epsilon || 0
-  return (Math.abs(latlon1.lat - latlon2.lat) <= epsilon) && (Math.abs(latlon1.lon - latlon2.lon) <= epsilon)
+  return (Math.abs(lonlat1.lat - lonlat2.lat) <= epsilon) && (Math.abs(lonlat1.lon - lonlat2.lon) <= epsilon)
 }
 
 module.exports.toCoordinates = module.exports.toGeoJSON = function toCoordinates (input) {
   var ll = normalize(input)
   return [ll.lon, ll.lat]
-}
-
-module.exports.tolatlon = function tolatlon (input) {
-  return normalize(input)
 }
 
 module.exports.toPoint = function toPoint (input) {
@@ -46,8 +42,8 @@ function fromCoordinates (coordinates) {
   return floatize({lon: coordinates[0], lat: coordinates[1]})
 }
 
-function fromLatlon (latlon) {
-  return floatize(latlon)
+function fromLatlng (lonlat) {
+  return floatize(lonlat)
 }
 
 function fromPoint (point) {
@@ -59,9 +55,9 @@ function fromString (str) {
   return floatize({lon: arr[0], lat: arr[1]})
 }
 
-function floatize (latlon) {
-  const lon = parseFloat(latlon.lon || latlon.lng || latlon.longitude)
-  return {lng: lon, lon: lon, lat: parseFloat(latlon.lat || latlon.latitude)}
+function floatize (lonlat) {
+  const lon = parseFloat(lonlat.lon || lonlat.lng || lonlat.longitude)
+  return {lon: lon, lat: parseFloat(lonlat.lat || lonlat.latitude)}
 }
 
 function normalize (unknown) {

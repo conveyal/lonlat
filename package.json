@@ -1,9 +1,9 @@
 {
-  "name": "lonlng",
-  "description": "Lat/lon normalization cause...**sigh**",
+  "name": "@conveyal/lonlat",
+  "description": "Lon/lat normalization",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
+    "test": "mastarm lint && node test.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/conveyal/lonlng",
   "devDependencies": {
+    "mastarm": "^1.3.0",
     "semantic-release": "^4.3.5"
   }
 }
