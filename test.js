@@ -1,3 +1,5 @@
+/* globals describe, it */
+
 const assert = require('assert')
 const ll = require('./')
 
@@ -9,23 +11,73 @@ const coordinates = [lon, lat]
 const str = `${lon},${lat}`
 const latlng = {lat, lng: lon}
 
-const pairs = [
-  // normalization
-  [lonlat, ll(lonlat)],
-  [lonlat, ll(point)],
-  [lonlat, ll(coordinates)],
-  [lonlat, ll(str)],
+describe('lonlat', () => {
+  describe('normalization', () => {
+    const testCases = [{
+      calculated: ll(lonlat),
+      description: 'Object with lon and lat keys'
+    }, {
+      calculated: ll(point),
+      description: 'Object with x and y keys'
+    }, {
+      calculated: ll(coordinates),
+      description: 'Array of lon and lat'
+    }, {
+      calculated: ll(str),
+      description: 'String with comma separating lon and lat'
+    }]
 
-  // convert to type, normalizes to `latlng` first in each function
-  [ll.toCoordinates(lonlat), coordinates],
-  [ll.toPoint(lonlat), point],
-  [ll.toString(lonlat), str],
+    testCases.forEach((test) => {
+      it(`should normalize from ${test.description}`, () => {
+        assert.deepEqual(test.calculated, lonlat)
+      })
+    })
+  })
 
-  // if the type is known, use the specific convert function directly
-  [lonlat, ll.fromLatlng(latlng)],
-  [lonlat, ll.fromCoordinates(coordinates)],
-  [lonlat, ll.fromPoint(point)],
-  [lonlat, ll.fromString(str)]
-]
+  describe('translations', () => {
+    const testCases = [{
+      expected: coordinates,
+      method: 'toCoordinates'
+    }, {
+      expected: point,
+      method: 'toPoint'
+    }, {
+      expected: str,
+      method: 'toString'
+    }]
 
-pairs.forEach((pair) => assert.deepEqual(pair[0], pair[1]))
+    testCases.forEach((test) => {
+      it(`should translate using ${test.method}`, () => {
+        assert.deepEqual(ll[test.method](lonlat), test.expected)
+      })
+    })
+  })
+
+  describe('known type parsing', () => {
+    const testCases = [{
+      calculated: ll.fromLatlng(latlng),
+      description: 'Object with lon and lat keys'
+    }, {
+      calculated: ll.fromCoordinates(coordinates),
+      description: 'Array of lon and lat'
+    }, {
+      calculated: ll.fromPoint(point),
+      description: 'Object with x and y keys'
+    }, {
+      calculated: ll.fromString(str),
+      description: 'String with comma separating lon and lat'
+    }]
+
+    testCases.forEach((test) => {
+      it(`should normalize from ${test.description}`, () => {
+        assert.deepEqual(test.calculated, lonlat)
+      })
+    })
+  })
+
+  describe('issues', () => {
+    it('#3 - Does not parse coordinates with 0 for lat or lon', () => {
+      assert.deepEqual(ll({ lat: 0, lng: 0 }), { lat: 0, lon: 0 })
+    })
+  })
+})
