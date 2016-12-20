@@ -56,8 +56,20 @@ function fromString (str) {
 }
 
 function floatize (lonlat) {
-  const lon = parseFloat(lonlat.lon || lonlat.lng || lonlat.longitude)
-  return {lon: lon, lat: parseFloat(lonlat.lat || lonlat.latitude)}
+  const lon = parseFloatWithAlternates([lonlat.lon, lonlat.lng, lonlat.longitude])
+  const lat = parseFloatWithAlternates([lonlat.lat, lonlat.latitude])
+  return {lon: lon, lat: lat}
+}
+
+function parseFloatWithAlternates (alternates) {
+  if (alternates.length > 0) {
+    const num = parseFloat(alternates[0])
+    if (isNaN(num)) {
+      return parseFloatWithAlternates(alternates.slice(1))
+    } else {
+      return num
+    }
+  }
 }
 
 function normalize (unknown) {
