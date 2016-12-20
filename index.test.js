@@ -56,7 +56,7 @@ describe('lonlat', () => {
   describe('known type parsing', () => {
     const testCases = [{
       calculated: ll.fromLatlng(latlng),
-      description: 'Object with lon and lat keys'
+      description: 'Object with lng and lat keys'
     }, {
       calculated: ll.fromCoordinates(coordinates),
       description: 'Array of lon and lat'
@@ -69,7 +69,7 @@ describe('lonlat', () => {
     }]
 
     testCases.forEach((test) => {
-      it(`should normalize from ${test.description}`, () => {
+      it(`should specifically parse from ${test.description}`, () => {
         assert.deepEqual(test.calculated, lonlat)
       })
     })
