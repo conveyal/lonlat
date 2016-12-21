@@ -1,6 +1,5 @@
-/* globals describe, it */
+/* globals describe, expect, it */
 
-const assert = require('assert')
 const ll = require('./')
 
 const lat = 38.13234
@@ -29,7 +28,7 @@ describe('lonlat', () => {
 
     testCases.forEach((test) => {
       it(`should normalize from ${test.description}`, () => {
-        assert.deepEqual(test.calculated, lonlat)
+        expect(test.calculated).toEqual(lonlat)
       })
     })
   })
@@ -48,7 +47,7 @@ describe('lonlat', () => {
 
     testCases.forEach((test) => {
       it(`should translate using ${test.method}`, () => {
-        assert.deepEqual(ll[test.method](lonlat), test.expected)
+        expect(ll[test.method](lonlat)).toEqual(test.expected)
       })
     })
   })
@@ -70,14 +69,27 @@ describe('lonlat', () => {
 
     testCases.forEach((test) => {
       it(`should specifically parse from ${test.description}`, () => {
-        assert.deepEqual(test.calculated, lonlat)
+        expect(test.calculated).toEqual(lonlat)
+      })
+    })
+  })
+
+  describe('invalid coordinates', () => {
+    const badCoords = [
+      '-999,999',
+      '0,999'
+    ]
+
+    badCoords.forEach((data) => {
+      it(`should throw error when parsing: ${JSON.stringify(data)}`, () => {
+        expect(() => ll(data)).toThrowErrorMatchingSnapshot()
       })
     })
   })
 
   describe('issues', () => {
     it('#3 - Does not parse coordinates with 0 for lat or lon', () => {
-      assert.deepEqual(ll({ lat: 0, lng: 0 }), { lat: 0, lon: 0 })
+      expect(ll({ lat: 0, lng: 0 })).toEqual({ lat: 0, lon: 0 })
     })
   })
 })

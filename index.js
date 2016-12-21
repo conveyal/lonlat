@@ -58,6 +58,12 @@ function fromString (str) {
 function floatize (lonlat) {
   const lon = parseFloatWithAlternates([lonlat.lon, lonlat.lng, lonlat.longitude])
   const lat = parseFloatWithAlternates([lonlat.lat, lonlat.latitude])
+  if ((!lon || lon > 180 || lon < -180) && lon !== 0) {
+    throw new Error(`Invalid longitude value: ${lonlat.lon || lonlat.lng || lonlat.longitude}`)
+  }
+  if ((!lat || lat > 90 || lat < -90) && lat !== 0) {
+    throw new Error(`Invalid longitude value: ${lonlat.lat || lonlat.latitude}`)
+  }
   return {lon: lon, lat: lat}
 }
 

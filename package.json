@@ -3,7 +3,7 @@
   "description": "Lon/lat normalization",
   "main": "index.js",
   "scripts": {
-    "cover": "npm test --coverage",
+    "cover": "npm test -- --coverage --coverage-paths index.js",
     "lint": "mastarm lint",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "test": "mastarm test"

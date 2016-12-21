@@ -1,0 +1,3 @@
+exports[`lonlat invalid coordinates should throw error when parsing: "-999,999" 1`] = `"Invalid longitude value: -999"`;
+
+exports[`lonlat invalid coordinates should throw error when parsing: "0,999" 1`] = `"Invalid longitude value: 999"`;
