@@ -1,4 +1,4 @@
-/* globals describe, expect, it */
+/* globals describe, expect, jest, it */
 
 const ll = require('./')
 
@@ -11,6 +11,34 @@ const str = `${lon},${lat}`
 const latlng = {lat, lng: lon}
 
 describe('lonlat', () => {
+  describe('print', () => {
+    it('should print basic input', () => {
+      expect(ll.print(str)).toEqual('70.01232, 38.13234')
+    })
+  })
+
+  describe('isEqual', () => {
+    it('should not be equal for different coordinates', () => {
+      expect(ll.isEqual('123.456,78.9', '123.4567,78.9')).toEqual(false)
+    })
+
+    it('should be equal for different coordinates with allowable epsilon', () => {
+      expect(ll.isEqual('123.456,78.9', '123.4567,78.9', 0.001)).toEqual(true)
+    })
+  })
+
+  describe('toLeaflet', () => {
+    it('should create leaflet latLng', () => {
+      window.L = {
+        latLng: jest.fn((lat, lng) => { return { leaflet_lat: lat, leaflet_lng: lng } })
+      }
+
+      expect(ll.toLeaflet('0,0')).toEqual({ leaflet_lat: 0, leaflet_lng: 0 })
+
+      window.L = undefined
+    })
+  })
+
   describe('normalization', () => {
     const testCases = [{
       calculated: ll(lonlat),
@@ -74,15 +102,24 @@ describe('lonlat', () => {
     })
   })
 
-  describe('invalid coordinates', () => {
-    const badCoords = [
-      '-999,999',
-      '0,999'
-    ]
+  describe('errors', () => {
+    it('toLeaflet should throw error if leaflet is not loaded', () => {
+      expect(() => ll.toLeaflet('0,0')).toThrowErrorMatchingSnapshot()
+    })
 
-    badCoords.forEach((data) => {
-      it(`should throw error when parsing: ${JSON.stringify(data)}`, () => {
-        expect(() => ll(data)).toThrowErrorMatchingSnapshot()
+    describe('invalid coordinates', () => {
+      const badCoords = [
+        '-999,999',
+        '0,999',
+        {},
+        undefined,
+        { lng: 1, latitude: 1234 }
+      ]
+
+      badCoords.forEach((data) => {
+        it(`should throw error when parsing: ${JSON.stringify(data)}`, () => {
+          expect(() => ll(data)).toThrowErrorMatchingSnapshot()
+        })
       })
     })
   })

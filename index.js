@@ -51,13 +51,13 @@ function fromPoint (point) {
 }
 
 function fromString (str) {
-  const arr = str.split(',')
+  var arr = str.split(',')
   return floatize({lon: arr[0], lat: arr[1]})
 }
 
 function floatize (lonlat) {
-  const lon = parseFloatWithAlternates([lonlat.lon, lonlat.lng, lonlat.longitude])
-  const lat = parseFloatWithAlternates([lonlat.lat, lonlat.latitude])
+  var lon = parseFloatWithAlternates([lonlat.lon, lonlat.lng, lonlat.longitude])
+  var lat = parseFloatWithAlternates([lonlat.lat, lonlat.latitude])
   if ((!lon || lon > 180 || lon < -180) && lon !== 0) {
     throw new Error(`Invalid longitude value: ${lonlat.lon || lonlat.lng || lonlat.longitude}`)
   }
@@ -69,7 +69,7 @@ function floatize (lonlat) {
 
 function parseFloatWithAlternates (alternates) {
   if (alternates.length > 0) {
-    const num = parseFloat(alternates[0])
+    var num = parseFloat(alternates[0])
     if (isNaN(num)) {
       return parseFloatWithAlternates(alternates.slice(1))
     } else {
