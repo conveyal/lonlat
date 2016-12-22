@@ -82,6 +82,6 @@ function normalize (unknown) {
   if (!unknown) throw new Error('Value must not be null or undefined.')
   if (Array.isArray(unknown)) return fromCoordinates(unknown)
   else if (typeof unknown === 'string') return fromString(unknown)
-  else if (unknown.x && unknown.y) return fromPoint(unknown)
+  else if ((unknown.x || unknown.x === 0) && (unknown.y || unknown.y === 0)) return fromPoint(unknown)
   return floatize(unknown)
 }

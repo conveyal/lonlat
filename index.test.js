@@ -127,6 +127,7 @@ describe('lonlat', () => {
   describe('issues', () => {
     it('#3 - Does not parse coordinates with 0 for lat or lon', () => {
       expect(ll({ lat: 0, lng: 0 })).toEqual({ lat: 0, lon: 0 })
+      expect(ll({ x: 0, y: 0 })).toEqual({ lat: 0, lon: 0 })
     })
   })
 })
