@@ -7,53 +7,256 @@ Lon/lat normalization cause...**sigh**.
 
 No one has agreed on a standard way of representing lon/lat. This is a small normalization library. Use this to convert all outside input before processing internally and convert to an external format right when it's being output.
 
-## Just use the `{lon: ${longitude}, lat: ${latitude}}` representation
-
-Utilizing this won't always be possible/easiest, so please at least adopt the following conventions. Any variables or functions that contain the following names should be represented by the accompanying structure:
-
-* `lonlat`: `{lon: ${longitude}, lat: ${latitude}}`
-* `coordinates`: `[${longitude}, ${latitude}]`
-* `point`: `{x: ${longitude}, y: ${latitude}}`
-
-If you must convert it to a string, put it in the following format:
-
-* `'${longitude},${latitude}'`
-
 ## API
 
+### lonlat(input)
+
+Tries parse input and transform to an output of normalized coordinates.  Will throw an error upon finding invalid coordinates.
+
+#### Arguments
+
+`input (*)`: Can be any of the following:
+- an array in the format: [longitude, latitude]
+- a string in the format: '{longitude},{latitude}'
+- an object with a `x` attribute representing `longitude` and a `y` attribute representing `latitude`
+- an object with a `lon`, `lng` or `longitude` attribute and a `lat` or `latitude` attribute
+
+#### Returns
+
+`(Object)`: An object with `lon` and `lat` attributes.
+
+#### Example
+
 ```js
-const assert = require('assert')
-const ll = require('@conveyal/lonlat')
+var lonlat = require('@conveyal/lonlat')
 
-const lat = 38.13234
-const lon = 70.01232
-const lonlat = {lon, lat}
-const point = {x: lon, y: lat}
-const coordinates = [lon, lat]
-const str = `${lon},${lat}`
-const latlng = {lat, lng: lon}
+// Object with lon/lat-ish attributes
+var position = lonlat({ lon: 12, lat: 34 })         // { lon: 12, lat: 34 }
+position = lonlat({ lng: 12, lat: 34 })             // { lon: 12, lat: 34 }
+position = lonlat({ longitude: 12, latitude: 34 })  // { lon: 12, lat: 34 }
+position = lonlat({ lng: 12, latitude: 34 })        // { lon: 12, lat: 34 }
 
-const pairs = [
-  // normalization
-  [lonlat, ll(lonlat)],
-  [lonlat, ll(point)],
-  [lonlat, ll(coordinates)],
-  [lonlat, ll(str)],
+// coordinate array
+position = lonlat([12, 34])   // { lon: 12, lat: 34 }
 
-  // convert to type, normalizes to `latlng` first in each function
-  [ll.toCoordinates(lonlat), coordinates],
-  [ll.toPoint(lonlat), point],
-  [ll.toString(lonlat), str],
+// string
+position = lonlat('12,34')   // { lon: 12, lat: 34 }
 
-  // if the type is known, use the specific convert function directly
-  [lonlat, ll.fromLatlng(latlng)],
-  [lonlat, ll.fromCoordinates(coordinates)],
-  [lonlat, ll.fromPoint(point)],
-  [lonlat, ll.fromString(str)]
-]
+// object with x and y attributes
+position = lonlat({ x: 12, y: 34 })   // { lon: 12, lat: 34 }
 
-pairs.forEach((pair) => assert.deepEqual(pair[0], pair[1]))
+// the following will throw errors
+position = lonlat({ lon: 999, lat: 34 })   // Error: Invalid longitude value: 999
+position = lonlat({ lon: 12, lat: 999 })   // Error: Invalid latitude value: 999
+position = lonlat({})                      // Error: Invalid latitude value: undefined
+position = lonlat(null)                    // Error: Value must not be null or undefined
 ```
+
+### lonlat.fromCoordinates(arr) or lonlat.fromGeoJSON(arr)
+
+Tries to parse from an array of coordinates.  Will throw an error upon finding invalid coordinates.
+
+#### Arguments
+
+`arr (Array)`: An array in the format: [longitude, latitude]
+
+#### Returns
+
+`(Object)`: An object with `lon` and `lat` attributes.
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var position = lonlat.fromCoordinates([12, 34])   // { lon: 12, lat: 34 }
+position = lonlat.fromGeoJSON([12, 34])           // { lon: 12, lat: 34 }
+```
+
+### lonlat.fromLatlng(obj) or lonlat.fromLeaflet(obj)
+
+Tries to parse from an object.  Will throw an error upon finding invalid coordinates.
+
+#### Arguments
+
+`obj (Object)`: An object with a `lon`, `lng` or `longitude` attribute and a `lat` or `latitude` attribute
+
+#### Returns
+
+`(Object)`: An object with `lon` and `lat` attributes.
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var position = lonlat.fromLatlng({ longitude: 12, latitude: 34 })   // { lon: 12, lat: 34 }
+position = lonlat.fromLeaflet({ lng: 12, lat: 34 })                 // { lon: 12, lat: 34 }
+```
+
+### lonlat.fromPoint(obj)
+
+Tries to parse from an object.  Will throw an error upon finding invalid coordinates.
+
+#### Arguments
+
+`obj (Object)`: An object with a `x` attribute representing `longitude` and a `y` attribute representing `latitude`
+
+#### Returns
+
+`(Object)`: An object with `lon` and `lat` attributes.
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var position = lonlat.fromPoint({ x: 12, y: 34 })   // { lon: 12, lat: 34 }
+```
+
+### lonlat.fromString(str)
+
+Tries to parse from a string.  Will throw an error upon finding invalid coordinates.
+
+#### Arguments
+
+`str (string)`: A string in the format: '{longitude},{latitude}'
+
+#### Returns
+
+`(Object)`: An object with `lon` and `lat` attributes.
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var position = lonlat.fromString('12,34')   // { lon: 12, lat: 34 }
+```
+
+### lonlat.print(input, [fixed=5])
+
+Returns a pretty string
+
+#### Arguments
+
+- `input (*)`: Any format mentioned in [lonlat(input)](#lonlatinput)
+- `[fixed=5] (Number)`:  The number of digits to round to
+
+#### Returns
+
+`(string)`: A string with the latitude and longitude rounded to the number of decimal places as specified by `fixed`
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var pretty = lonlat.print('12.345678,34')   // '12.34568, 34.00000'
+```
+
+### lonlat.isEqual(lonlat1, lonlat2, [epsilon=0])
+
+Checks equality of two inputs within an allowable difference.
+
+#### Arguments
+
+- `lonlat1 (*)`: Any format mentioned in [lonlat(input)](#lonlatinput)
+- `lonlat2 (*)`: Any format mentioned in [lonlat(input)](#lonlatinput)
+- `[epsilon=0] (Number)`:  The maximum allowable difference of between each latitude and longitude
+
+#### Returns
+
+`(boolean)`: Returns `true` if the inputs are equal or `false` if they are not
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var isEqual = lonlat.isEqual('12,34', [12, 34])   // true
+```
+
+### lonlat.toCoordinates(input)
+
+Translates to a coordinate array.
+
+#### Arguments
+
+`input (*)`: Any format mentioned in [lonlat(input)](#lonlatinput)
+
+#### Returns
+
+`(Array)`: An array in the format: [longitude, latitude]
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var coords = lonlat.toCoordinates('12,34')   // [12, 34]
+```
+
+### lonlat.toPoint(input)
+
+Translates to point Object.
+
+#### Arguments
+
+`input (*)`: Any format mentioned in [lonlat(input)](#lonlatinput)
+
+#### Returns
+
+`(Object)`: An object with `x` and `y` attributes representing latitude and longitude respectively
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var point = lonlat.toPoint('12,34')   // { x: 12, y: 34 }
+```
+
+### lonlat.toString(input)
+
+Translates to coordinate string.
+
+#### Arguments
+
+`input (*)`: Any format mentioned in [lonlat(input)](#lonlatinput)
+
+#### Returns
+
+`(string)`: A string in the format 'latitude,longitude'
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var str = lonlat.toString({ lat: 12, long: 34 })   // '12,34'
+```
+
+### lonlat.toLeaflet(input)
+
+Translates to [Leaflet LatLng](http://leafletjs.com/reference.html#latlng) object.  This function requires Leaflet to be installed as a global variable `L` in the window environment.
+
+#### Arguments
+
+`input (*)`: Any format mentioned in [lonlat(input)](#lonlatinput)
+
+#### Returns
+
+`(Object)`: A [Leaflet LatLng](http://leafletjs.com/reference.html#latlng) object
+
+#### Example
+
+```js
+var lonlat = require('@conveyal/lonlat')
+
+var position = lonlat.toLeaflet({ lat: 12, long: 34 })   // Leaflet LatLng object
+```
+
 
 [npm-image]: https://img.shields.io/npm/v/@conveyal/lonlat.svg?maxAge=2592000&style=flat-square
 [npm-url]: https://www.npmjs.com/package/@conveyal/lonlat
