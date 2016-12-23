@@ -51,19 +51,37 @@ function fromPoint (point) {
 }
 
 function fromString (str) {
-  const arr = str.split(',')
+  var arr = str.split(',')
   return floatize({lon: arr[0], lat: arr[1]})
 }
 
 function floatize (lonlat) {
-  const lon = parseFloat(lonlat.lon || lonlat.lng || lonlat.longitude)
-  return {lon: lon, lat: parseFloat(lonlat.lat || lonlat.latitude)}
+  var lon = parseFloatWithAlternates([lonlat.lon, lonlat.lng, lonlat.longitude])
+  var lat = parseFloatWithAlternates([lonlat.lat, lonlat.latitude])
+  if ((!lon || lon > 180 || lon < -180) && lon !== 0) {
+    throw new Error(`Invalid longitude value: ${lonlat.lon || lonlat.lng || lonlat.longitude}`)
+  }
+  if ((!lat || lat > 90 || lat < -90) && lat !== 0) {
+    throw new Error(`Invalid longitude value: ${lonlat.lat || lonlat.latitude}`)
+  }
+  return {lon: lon, lat: lat}
+}
+
+function parseFloatWithAlternates (alternates) {
+  if (alternates.length > 0) {
+    var num = parseFloat(alternates[0])
+    if (isNaN(num)) {
+      return parseFloatWithAlternates(alternates.slice(1))
+    } else {
+      return num
+    }
+  }
 }
 
 function normalize (unknown) {
   if (!unknown) throw new Error('Value must not be null or undefined.')
   if (Array.isArray(unknown)) return fromCoordinates(unknown)
   else if (typeof unknown === 'string') return fromString(unknown)
-  else if (unknown.x && unknown.y) return fromPoint(unknown)
+  else if ((unknown.x || unknown.x === 0) && (unknown.y || unknown.y === 0)) return fromPoint(unknown)
   return floatize(unknown)
 }
