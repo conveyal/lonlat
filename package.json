@@ -27,6 +27,6 @@
   "homepage": "https://github.com/conveyal/lonlat",
   "devDependencies": {
     "mastarm": "^3.2.1",
-    "semantic-release": "^4.3.5"
+    "semantic-release": "^6.3.2"
   }
 }
