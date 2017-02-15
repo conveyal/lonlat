@@ -59,10 +59,10 @@ function floatize (lonlat) {
   var lon = parseFloatWithAlternates([lonlat.lon, lonlat.lng, lonlat.longitude])
   var lat = parseFloatWithAlternates([lonlat.lat, lonlat.latitude])
   if ((!lon || lon > 180 || lon < -180) && lon !== 0) {
-    throw new Error(`Invalid longitude value: ${lonlat.lon || lonlat.lng || lonlat.longitude}`)
+    throw new Error('Invalid longitude value: ' + (lonlat.lon || lonlat.lng || lonlat.longitude))
   }
   if ((!lat || lat > 90 || lat < -90) && lat !== 0) {
-    throw new Error(`Invalid longitude value: ${lonlat.lat || lonlat.latitude}`)
+    throw new Error('Invalid longitude value: ' + (lonlat.lat || lonlat.latitude))
   }
   return {lon: lon, lat: lat}
 }
