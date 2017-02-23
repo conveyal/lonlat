@@ -248,7 +248,7 @@ Translates to coordinate string.
 ```js
 var lonlat = require('@conveyal/lonlat')
 
-var str = lonlat.toString({ lat: 12, long: 34 })   // '12,34'
+var str = lonlat.toString({ lat: 12, lng: 34 })   // '12,34'
 ```
 
 ### lonlat.toLeaflet(input)
@@ -268,7 +268,7 @@ Translates to [Leaflet LatLng](http://leafletjs.com/reference.html#latlng) objec
 ```js
 var lonlat = require('@conveyal/lonlat')
 
-var position = lonlat.toLeaflet({ lat: 12, long: 34 })   // Leaflet LatLng object
+var position = lonlat.toLeaflet({ lat: 12, lng: 34 })   // Leaflet LatLng object
 ```
 
 
