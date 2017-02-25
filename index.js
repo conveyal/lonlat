@@ -62,7 +62,7 @@ function floatize (lonlat) {
     throw new Error('Invalid longitude value: ' + (lonlat.lon || lonlat.lng || lonlat.longitude))
   }
   if ((!lat || lat > 90 || lat < -90) && lat !== 0) {
-    throw new Error('Invalid longitude value: ' + (lonlat.lat || lonlat.latitude))
+    throw new Error('Invalid latitude value: ' + (lonlat.lat || lonlat.latitude))
   }
   return {lon: lon, lat: lat}
 }
