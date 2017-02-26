@@ -9,6 +9,20 @@ No one has agreed on a standard way of representing lon/lat. This is a small nor
 
 ## API
 
+* [lonlat](#lonlatinput)
+* [lonlat.fromCoordinates](#lonlatfromcoordinatesar-or-lonlatfromgeojsonarr)
+* [lonlat.fromGeoJSON](#lonlatfromcoordinatesar-or-lonlatfromgeojsonarr)
+* [lonlat.fromLatlng](#lonlatfromlatlngobj-or-lonlatfromleafletobj)
+* [lonlat.fromLeaflet](#lonlatfromlatlngobj-or-lonlatfromleafletobj)
+* [lonlat.fromPoint](#lonlatfrompointobj)
+* [lonlat.fromString](#lonlatfromstringstr)
+* [lonlat.print](#lonlatprintinput-fixed5)
+* [lonlat.isEqual](#lonlatisequallonlat1-lonlat2-epsilon0)
+* [lonlat.toCoordinates](#lonlattocoordinatesinput)
+* [lonlat.toPoint](#lonlattopointinput)
+* [lonlat.toString](#lonlattostringinput)
+* [lonlat.toLeaflet](#lonlattoleafletinput)
+
 ### lonlat(input)
 
 Tries parse input and transform to an output of normalized coordinates.  Will throw an error upon finding invalid coordinates.
@@ -234,7 +248,7 @@ Translates to coordinate string.
 ```js
 var lonlat = require('@conveyal/lonlat')
 
-var str = lonlat.toString({ lat: 12, long: 34 })   // '12,34'
+var str = lonlat.toString({ lat: 12, lng: 34 })   // '12,34'
 ```
 
 ### lonlat.toLeaflet(input)
@@ -254,7 +268,7 @@ Translates to [Leaflet LatLng](http://leafletjs.com/reference.html#latlng) objec
 ```js
 var lonlat = require('@conveyal/lonlat')
 
-var position = lonlat.toLeaflet({ lat: 12, long: 34 })   // Leaflet LatLng object
+var position = lonlat.toLeaflet({ lat: 12, lng: 34 })   // Leaflet LatLng object
 ```
 
 
