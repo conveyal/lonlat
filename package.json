@@ -29,7 +29,7 @@
   "homepage": "https://github.com/conveyal/lonlat",
   "devDependencies": {
     "documentation": "^4.0.0-beta.18",
-    "mastarm": "^3.2.1",
+    "mastarm": "^3.5.0",
     "semantic-release": "^6.3.2"
   }
 }
