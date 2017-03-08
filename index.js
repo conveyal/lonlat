@@ -130,7 +130,7 @@ module.exports.fromPoint = fromPoint
  *
  * @memberof conveyal/lonlat
  * @param  {string} str                 A string in the format: `longitude,latitude`
- * @param  {boolean} [latIsFrist=false] Whether or not the first value is latitude.
+ * @param  {boolean} [latIsFirst=false] Whether or not the first value is latitude.
  * @return {lonlat.types.output}
  * @throws {lonlat.types.InvalidCoordinateException}
  * @example
@@ -139,9 +139,9 @@ module.exports.fromPoint = fromPoint
  var position = lonlat.fromString('12,34')        // { lon: 12, lat: 34 }
  var position = lonlat.fromString('12,34', true)  // { lon: 34, lat: 12 }
  */
-function fromString (str, latIsFrist) {
+function fromString (str, latIsFirst) {
   var arr = str.split(',')
-  return latIsFrist
+  return latIsFirst
     ? floatize({lat: arr[0], lon: arr[1]})
     : floatize({lon: arr[0], lat: arr[1]})
 }

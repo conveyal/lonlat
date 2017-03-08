@@ -182,7 +182,7 @@ Tries to parse from a string.
 **Parameters**
 
 -   `str` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string in the format: `longitude,latitude`
--   `latIsFrist` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** Whether or not the first value is latitude. (optional, default `false`)
+-   `latIsFirst` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** Whether or not the first value is latitude. (optional, default `false`)
 
 **Examples**
 
