@@ -8,6 +8,7 @@ const lonlat = {lon, lat}
 const point = {x: lon, y: lat}
 const coordinates = [lon, lat]
 const str = `${lon},${lat}`
+const strLatFirst = `${lat},${lon}`
 const latlng = {lat, lng: lon}
 
 describe('lonlat', () => {
@@ -92,7 +93,10 @@ describe('lonlat', () => {
       description: 'Object with x and y keys'
     }, {
       calculated: ll.fromString(str),
-      description: 'String with comma separating lon and lat'
+      description: 'String with comma separating lon and lat, respectively'
+    }, {
+      calculated: ll.fromString(strLatFirst, true),
+      description: 'String with comma separating lat and lon, respectively'
     }]
 
     testCases.forEach((test) => {

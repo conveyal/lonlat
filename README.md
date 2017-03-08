@@ -21,8 +21,8 @@ No one has agreed on a standard way of representing lon/lat. This is a small nor
 
 #### Table of Contents
 
--   [input](#input)
--   [InvalidCoordinateException](#invalidcoordinateexception)
+-   [lonlat.types.input](#lonlattypesinput)
+-   [lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)
 -   [conveyal/lonlat](#conveyallonlat)
     -   [fromCoordinates](#fromcoordinates)
     -   [fromLatlng](#fromlatlng)
@@ -34,9 +34,9 @@ No one has agreed on a standard way of representing lon/lat. This is a small nor
     -   [toLeaflet](#toleaflet)
     -   [toPoint](#topoint)
     -   [toString](#tostring)
--   [lonlat](#lonlat)
+-   [lonlat.types.output](#lonlattypesoutput)
 
-### input
+### lonlat.types.input
 
 (type)
 
@@ -57,7 +57,7 @@ Type: ([Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 
 -   `unknown`  
 
-### InvalidCoordinateException
+### lonlat.types.InvalidCoordinateException
 
 (exception type)
 
@@ -75,7 +75,7 @@ Parse an unknown type of input.
 
 **Parameters**
 
--   `unknown` **[input](#input)** 
+-   `unknown` **[lonlat.types.input](#lonlattypesinput)** 
 
 **Examples**
 
@@ -104,9 +104,9 @@ position = lonlat({})                      // Error: Invalid latitude value: und
 position = lonlat(null)                    // Error: Value must not be null or undefined
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
-Returns **[lonlat](#lonlat)** 
+Returns **[lonlat.types.output](#lonlattypesoutput)** 
 
 #### fromCoordinates
 
@@ -127,9 +127,9 @@ var position = lonlat.fromCoordinates([12, 34])   // { lon: 12, lat: 34 }
 position = lonlat.fromGeoJSON([12, 34])           // { lon: 12, lat: 34 }
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
-Returns **[lonlat](#lonlat)** 
+Returns **[lonlat.types.output](#lonlattypesoutput)** 
 
 #### fromLatlng
 
@@ -150,9 +150,9 @@ var position = lonlat.fromLatlng({ longitude: 12, latitude: 34 })   // { lon: 12
 position = lonlat.fromLeaflet({ lng: 12, lat: 34 })                 // { lon: 12, lat: 34 }
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
-Returns **[lonlat](#lonlat)** 
+Returns **[lonlat.types.output](#lonlattypesoutput)** 
 
 #### fromPoint
 
@@ -171,9 +171,9 @@ var lonlat = require('@conveyal/lonlat')
 var position = lonlat.fromPoint({ x: 12, y: 34 })   // { lon: 12, lat: 34 }
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
-Returns **[lonlat](#lonlat)** 
+Returns **[lonlat.types.output](#lonlattypesoutput)** 
 
 #### fromString
 
@@ -182,18 +182,20 @@ Tries to parse from a string.
 **Parameters**
 
 -   `str` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string in the format: `longitude,latitude`
+-   `latIsFirst` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** Whether or not the first value is latitude. (optional, default `false`)
 
 **Examples**
 
 ```javascript
 var lonlat = require('@conveyal/lonlat')
 
-var position = lonlat.fromString('12,34')   // { lon: 12, lat: 34 }
+var position = lonlat.fromString('12,34')        // { lon: 12, lat: 34 }
+var position = lonlat.fromString('12,34', true)  // { lon: 34, lat: 12 }
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
-Returns **[lonlat](#lonlat)** 
+Returns **[lonlat.types.output](#lonlattypesoutput)** 
 
 #### isEqual
 
@@ -201,9 +203,9 @@ Determine if two inputs are equal to each other
 
 **Parameters**
 
--   `lonlat1` **[input](#input)** 
--   `lonlat2` **[input](#input)** 
--   `epsilon` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** The maximum acceptable deviation to be considered equal.  Default = 0
+-   `lonlat1` **input** 
+-   `lonlat2` **input** 
+-   `epsilon` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** The maximum acceptable deviation to be considered equal. (optional, default `0`)
 
 **Examples**
 
@@ -213,7 +215,7 @@ var lonlat = require('@conveyal/lonlat')
 var isEqual = lonlat.isEqual('12,34', [12, 34])   // true
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
 Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
@@ -221,8 +223,8 @@ Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 **Parameters**
 
--   `input` **[input](#input)** 
--   `fixed` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** The number of decimal places to round to.
+-   `input` **input** 
+-   `fixed` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** The number of decimal places to round to. (optional, default `5`)
 
 **Examples**
 
@@ -232,7 +234,7 @@ var lonlat = require('@conveyal/lonlat')
 var pretty = lonlat.print('12.345678,34')   // '12.34568, 34.00000'
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
 Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string with in the format `longitude,latitude` rounded to
                            the number of decimal places as specified by `fixed`
@@ -245,7 +247,7 @@ Translates to a coordinate array.
 
 **Parameters**
 
--   `input` **[input](#input)** 
+-   `input` **[lonlat.types.input](#lonlattypesinput)** 
 
 **Examples**
 
@@ -255,7 +257,7 @@ var lonlat = require('@conveyal/lonlat')
 var coords = lonlat.toCoordinates('12,34')   // [12, 34]
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
 Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** An array in the format [longitude, latitude]
 
@@ -266,7 +268,7 @@ This function requires Leaflet to be installed as a global variable `L` in the w
 
 **Parameters**
 
--   `input` **[input](#input)** 
+-   `input` **[lonlat.types.input](#lonlattypesinput)** 
 
 **Examples**
 
@@ -276,7 +278,7 @@ var lonlat = require('@conveyal/lonlat')
 var position = lonlat.toLeaflet({ lat: 12, long: 34 })   // Leaflet LatLng object
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** A Leaflet LatLng object
 
@@ -286,7 +288,7 @@ Translates to point Object.
 
 **Parameters**
 
--   `input` **[input](#input)** 
+-   `input` **[lonlat.types.input](#lonlattypesinput)** 
 
 **Examples**
 
@@ -296,7 +298,7 @@ var lonlat = require('@conveyal/lonlat')
 var point = lonlat.toPoint('12,34')   // { x: 12, y: 34 }
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** An object with `x` and `y` attributes representing latitude and longitude respectively
 
@@ -306,7 +308,7 @@ Translates to coordinate string.
 
 **Parameters**
 
--   `input` **[input](#input)** 
+-   `input` **[lonlat.types.input](#lonlattypesinput)** 
 
 **Examples**
 
@@ -316,11 +318,11 @@ var lonlat = require('@conveyal/lonlat')
 var str = lonlat.toString({ lat: 12, longitude: 34 })   // '34,12'
 ```
 
--   Throws **[InvalidCoordinateException](#invalidcoordinateexception)** 
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
 
 Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string in the format 'longitude,latitude'
 
-### lonlat
+### lonlat.types.output
 
 (type)
 

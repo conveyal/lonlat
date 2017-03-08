@@ -10,14 +10,14 @@
  *   The properties can be named various things.
  *   For longitude any of the following are valid: `lon`, `lng` or `longitude`
  *   For latitude any of the following are valid: `lat` or `latitude`
- * @typedef {Array|string|Object} input
+ * @typedef {Array|string|Object} lonlat.types.input
  */
 
 /**
  * (type)
  *
  * Standardized lon/lat object.
- * @typedef {Object} lonlat
+ * @typedef {Object} lonlat.types.output
  * @property {number} lat
  * @property {number} lon
  */
@@ -26,16 +26,16 @@
  * (exception type)
  *
  * An error that is thrown upon providing invalid coordinates.
- * @typedef {Error} InvalidCoordinateException
+ * @typedef {Error} lonlat.types.InvalidCoordinateException
  */
 
 /**
  * Parse an unknown type of input.
  *
  * @module conveyal/lonlat
- * @param {input} unknown
- * @return {lonlat}
- * @throws {InvalidCoordinateException}
+ * @param {lonlat.types.input} unknown
+ * @return {lonlat.types.output}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -76,8 +76,8 @@ module.exports = normalize
  *
  * @memberof conveyal/lonlat
  * @param  {Array} coordinates  An array in the format: [longitude, latitude]
- * @return {lonlat}
- * @throws {InvalidCoordinateException}
+ * @return {lonlat.types.output}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -95,8 +95,8 @@ module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
  * Tries to parse from an object.
  *
  * @param  {Object} lonlat  An object with a `lon`, `lng` or `longitude` attribute and a `lat` or `latitude` attribute
- * @return {lonlat}
- * @throws {InvalidCoordinateException}
+ * @return {lonlat.types.output}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -113,8 +113,8 @@ module.exports.fromLatlng = module.exports.fromLeaflet = function fromLatlng (lo
  * @memberof conveyal/lonlat
  * @param  {Object} point  An object with a `x` attribute representing `longitude`
  *                         and a `y` attribute representing `latitude`
- * @return {lonlat}
- * @throws {InvalidCoordinateException}
+ * @return {lonlat.types.output}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -129,17 +129,21 @@ module.exports.fromPoint = fromPoint
  * Tries to parse from a string.
  *
  * @memberof conveyal/lonlat
- * @param  {string} str A string in the format: `longitude,latitude`
- * @return {lonlat}
- * @throws {InvalidCoordinateException}
+ * @param  {string} str                 A string in the format: `longitude,latitude`
+ * @param  {boolean} [latIsFirst=false] Whether or not the first value is latitude.
+ * @return {lonlat.types.output}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
- var position = lonlat.fromString('12,34')   // { lon: 12, lat: 34 }
+ var position = lonlat.fromString('12,34')        // { lon: 12, lat: 34 }
+ var position = lonlat.fromString('12,34', true)  // { lon: 34, lat: 12 }
  */
-function fromString (str) {
+function fromString (str, latIsFirst) {
   var arr = str.split(',')
-  return floatize({lon: arr[0], lat: arr[1]})
+  return latIsFirst
+    ? floatize({lat: arr[0], lon: arr[1]})
+    : floatize({lon: arr[0], lat: arr[1]})
 }
 module.exports.fromString = fromString
 
@@ -148,9 +152,9 @@ module.exports.fromString = fromString
  *
  * @param  {input}  lonlat1
  * @param  {input}  lonlat2
- * @param  {number} [epsilon] The maximum acceptable deviation to be considered equal.  Default = 0
+ * @param  {number} [epsilon=0] The maximum acceptable deviation to be considered equal.
  * @return {boolean}
- * @throws {InvalidCoordinateException}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -165,10 +169,10 @@ module.exports.isEqual = function (lonlat1, lonlat2, epsilon) {
 
 /**
  * @param  {input} input
- * @param  {number} [fixed] The number of decimal places to round to.
- * @return {string}         A string with in the format `longitude,latitude` rounded to
+ * @param  {number} [fixed=5] The number of decimal places to round to.
+ * @return {string}           A string with in the format `longitude,latitude` rounded to
  *                            the number of decimal places as specified by `fixed`
- * @throws {InvalidCoordinateException}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -184,9 +188,9 @@ module.exports.print = function print (input, fixed) {
  *
  * Translates to a coordinate array.
  *
- * @param {input} input
+ * @param {lonlat.types.input} input
  * @return {Array}      An array in the format [longitude, latitude]
- * @throws {InvalidCoordinateException}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -201,9 +205,9 @@ module.exports.toCoordinates = module.exports.toGeoJSON = function toCoordinates
  * Translates to {@link http://leafletjs.com/reference-1.0.3.html#latlng|Leaflet LatLng} object.
  * This function requires Leaflet to be installed as a global variable `L` in the window environment.
  *
- * @param {input} input
+ * @param {lonlat.types.input} input
  * @return {Object}      A Leaflet LatLng object
- * @throws {InvalidCoordinateException}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -218,9 +222,9 @@ module.exports.toLeaflet = function toLeaflet (input) {
 /**
  * Translates to point Object.
  *
- * @param {input} input
+ * @param {lonlat.types.input} input
  * @return {Object}      An object with `x` and `y` attributes representing latitude and longitude respectively
- * @throws {InvalidCoordinateException}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
@@ -234,9 +238,9 @@ module.exports.toPoint = function toPoint (input) {
 /**
  * Translates to coordinate string.
  *
- * @param {input} input
+ * @param {lonlat.types.input} input
  * @return {string}     A string in the format 'longitude,latitude'
- * @throws {InvalidCoordinateException}
+ * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
