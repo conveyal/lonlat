@@ -213,7 +213,7 @@ Tries to parse from a string where the latitude appears before the longitude.
 ```javascript
 var lonlat = require('@conveyal/lonlat')
 
-var position = lonlat.fromLatFirstString('12,34) // { lon: 34, lat: 12 }
+var position = lonlat.fromLatFirstString('12,34') // { lon: 34, lat: 12 }
 ```
 
 -   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 

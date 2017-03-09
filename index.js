@@ -156,7 +156,7 @@ module.exports.fromString = module.exports.fromLonFirstString = fromString
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
- var position = lonlat.fromLatFirstString('12,34) // { lon: 34, lat: 12 }
+ var position = lonlat.fromLatFirstString('12,34') // { lon: 34, lat: 12 }
  */
 function fromLatFirstString (str) {
   var arr = str.split(',')
