@@ -28,12 +28,14 @@ No one has agreed on a standard way of representing lon/lat. This is a small nor
     -   [fromLatlng](#fromlatlng)
     -   [fromPoint](#frompoint)
     -   [fromString](#fromstring)
+    -   [fromLatFirstString](#fromlatfirststring)
     -   [isEqual](#isequal)
     -   [print](#print)
     -   [toCoordinates](#tocoordinates)
     -   [toLeaflet](#toleaflet)
     -   [toPoint](#topoint)
     -   [toString](#tostring)
+    -   [toLatFirstString](#tolatfirststring)
 -   [lonlat.types.output](#lonlattypesoutput)
 
 ### lonlat.types.input
@@ -177,20 +179,41 @@ Returns **[lonlat.types.output](#lonlattypesoutput)**
 
 #### fromString
 
-Tries to parse from a string.
+<b>aliases:</b> fromLonFirstString<br>
+
+Tries to parse from a string where the longitude appears before the latitude.
 
 **Parameters**
 
 -   `str` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string in the format: `longitude,latitude`
--   `latIsFirst` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** Whether or not the first value is latitude. (optional, default `false`)
 
 **Examples**
 
 ```javascript
 var lonlat = require('@conveyal/lonlat')
 
-var position = lonlat.fromString('12,34')        // { lon: 12, lat: 34 }
-var position = lonlat.fromString('12,34', true)  // { lon: 34, lat: 12 }
+var position = lonlat.fromString('12,34')          // { lon: 12, lat: 34 }
+var position = lonlat.fromLonFirstString('12,34')  // { lon: 12, lat: 34 }
+```
+
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
+
+Returns **[lonlat.types.output](#lonlattypesoutput)** 
+
+#### fromLatFirstString
+
+Tries to parse from a string where the latitude appears before the longitude.
+
+**Parameters**
+
+-   `str` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string in the format: `latitude,longitude`
+
+**Examples**
+
+```javascript
+var lonlat = require('@conveyal/lonlat')
+
+var position = lonlat.fromLatFirstString('12,34) // { lon: 34, lat: 12 }
 ```
 
 -   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
@@ -304,7 +327,9 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 #### toString
 
-Translates to coordinate string.
+<b>aliases:</b> toLonFirstString<br>
+
+Translates to coordinate string where the longitude appears before latitude.
 
 **Parameters**
 
@@ -315,7 +340,28 @@ Translates to coordinate string.
 ```javascript
 var lonlat = require('@conveyal/lonlat')
 
-var str = lonlat.toString({ lat: 12, longitude: 34 })   // '34,12'
+var str = lonlat.toString({ lat: 12, longitude: 34 })          // '34,12'
+var str = lonlat.toLonFirstString({ lat: 12, longitude: 34 })  // '34,12'
+```
+
+-   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** A string in the format 'longitude,latitude'
+
+#### toLatFirstString
+
+Translates to coordinate string where the latitude appears before longitude.
+
+**Parameters**
+
+-   `input` **[lonlat.types.input](#lonlattypesinput)** 
+
+**Examples**
+
+```javascript
+var lonlat = require('@conveyal/lonlat')
+
+var str = lonlat.toLatFirstString({ lat: 12, longitude: 34 })  // '12,34'
 ```
 
 -   Throws **[lonlat.types.InvalidCoordinateException](#lonlattypesinvalidcoordinateexception)** 
