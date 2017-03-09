@@ -126,26 +126,43 @@ function fromPoint (point) {
 module.exports.fromPoint = fromPoint
 
 /**
- * Tries to parse from a string.
+ * <b>aliases:</b> fromLonFirstString<br>
+ *
+ * Tries to parse from a string where the longitude appears before the latitude.
  *
  * @memberof conveyal/lonlat
- * @param  {string} str                 A string in the format: `longitude,latitude`
- * @param  {boolean} [latIsFirst=false] Whether or not the first value is latitude.
+ * @param  {string} str          A string in the format: `longitude,latitude`
  * @return {lonlat.types.output}
  * @throws {lonlat.types.InvalidCoordinateException}
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
- var position = lonlat.fromString('12,34')        // { lon: 12, lat: 34 }
- var position = lonlat.fromString('12,34', true)  // { lon: 34, lat: 12 }
+ var position = lonlat.fromString('12,34')          // { lon: 12, lat: 34 }
+ var position = lonlat.fromLonFirstString('12,34')  // { lon: 12, lat: 34 }
  */
-function fromString (str, latIsFirst) {
+function fromString (str) {
   var arr = str.split(',')
-  return latIsFirst
-    ? floatize({lat: arr[0], lon: arr[1]})
-    : floatize({lon: arr[0], lat: arr[1]})
+  return floatize({lon: arr[0], lat: arr[1]})
 }
-module.exports.fromString = fromString
+module.exports.fromString = module.exports.fromLonFirstString = fromString
+
+/**
+ * Tries to parse from a string where the latitude appears before the longitude.
+ *
+ * @memberof conveyal/lonlat
+ * @param  {string} str           A string in the format: `latitude,longitude`
+ * @return {lonlat.types.output}
+ * @throws {lonlat.types.InvalidCoordinateException}
+ * @example
+ * var lonlat = require('@conveyal/lonlat')
+
+ var position = lonlat.fromLatFirstString('12,34') // { lon: 34, lat: 12 }
+ */
+function fromLatFirstString (str) {
+  var arr = str.split(',')
+  return floatize({lat: arr[0], lon: arr[1]})
+}
+module.exports.fromLatFirstString = fromLatFirstString
 
 /**
  * Determine if two inputs are equal to each other
@@ -236,7 +253,9 @@ module.exports.toPoint = function toPoint (input) {
 }
 
 /**
- * Translates to coordinate string.
+ * <b>aliases:</b> toLonFirstString<br>
+ *
+ * Translates to coordinate string where the longitude appears before latitude.
  *
  * @param {lonlat.types.input} input
  * @return {string}     A string in the format 'longitude,latitude'
@@ -244,11 +263,28 @@ module.exports.toPoint = function toPoint (input) {
  * @example
  * var lonlat = require('@conveyal/lonlat')
 
- var str = lonlat.toString({ lat: 12, longitude: 34 })   // '34,12'
+ var str = lonlat.toString({ lat: 12, longitude: 34 })          // '34,12'
+ var str = lonlat.toLonFirstString({ lat: 12, longitude: 34 })  // '34,12'
  */
-module.exports.toString = function toString (input) {
+module.exports.toString = module.exports.toLonFirstString = function toString (input) {
   var ll = normalize(input)
   return ll.lon + ',' + ll.lat
+}
+
+/**
+ * Translates to coordinate string where the latitude appears before longitude.
+ *
+ * @param {lonlat.types.input} input
+ * @return {string}     A string in the format 'longitude,latitude'
+ * @throws {lonlat.types.InvalidCoordinateException}
+ * @example
+ * var lonlat = require('@conveyal/lonlat')
+
+ var str = lonlat.toLatFirstString({ lat: 12, longitude: 34 })  // '12,34'
+ */
+module.exports.toLatFirstString = function toLatFirstString (input) {
+  var ll = normalize(input)
+  return ll.lat + ',' + ll.lon
 }
 
 function floatize (lonlat) {

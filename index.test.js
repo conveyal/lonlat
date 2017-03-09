@@ -72,6 +72,12 @@ describe('lonlat', () => {
     }, {
       expected: str,
       method: 'toString'
+    }, {
+      expected: str,
+      method: 'toLonFirstString'
+    }, {
+      expected: strLatFirst,
+      method: 'toLatFirstString'
     }]
 
     testCases.forEach((test) => {
@@ -87,15 +93,21 @@ describe('lonlat', () => {
       description: 'Object with lng and lat keys'
     }, {
       calculated: ll.fromCoordinates(coordinates),
-      description: 'Array of lon and lat'
+      description: 'Array of lon and lat (fromCoordinates)'
+    }, {
+      calculated: ll.fromGeoJSON(coordinates),
+      description: 'Array of lon and lat (fromGeoJSON)'
     }, {
       calculated: ll.fromPoint(point),
       description: 'Object with x and y keys'
     }, {
       calculated: ll.fromString(str),
-      description: 'String with comma separating lon and lat, respectively'
+      description: 'String with comma separating lon and lat, respectively (fromString)'
     }, {
-      calculated: ll.fromString(strLatFirst, true),
+      calculated: ll.fromLonFirstString(str),
+      description: 'String with comma separating lon and lat, respectively (fromLonFirstString)'
+    }, {
+      calculated: ll.fromLatFirstString(strLatFirst),
       description: 'String with comma separating lat and lon, respectively'
     }]
 
