@@ -167,8 +167,8 @@ module.exports.fromLatFirstString = fromLatFirstString
 /**
  * Determine if two inputs are equal to each other
  *
- * @param  {input}  lonlat1
- * @param  {input}  lonlat2
+ * @param  {lonlat.types.input}  lonlat1
+ * @param  {lonlat.types.input}  lonlat2
  * @param  {number} [epsilon=0] The maximum acceptable deviation to be considered equal.
  * @return {boolean}
  * @throws {lonlat.types.InvalidCoordinateException}
@@ -185,7 +185,7 @@ module.exports.isEqual = function (lonlat1, lonlat2, epsilon) {
 }
 
 /**
- * @param  {input} input
+ * @param  {lonlat.types.input} input
  * @param  {number} [fixed=5] The number of decimal places to round to.
  * @return {string}           A string with in the format `longitude,latitude` rounded to
  *                            the number of decimal places as specified by `fixed`
