@@ -226,8 +226,8 @@ Determine if two inputs are equal to each other
 
 **Parameters**
 
--   `lonlat1` **input** 
--   `lonlat2` **input** 
+-   `lonlat1` **[lonlat.types.input](#lonlattypesinput)** 
+-   `lonlat2` **[lonlat.types.input](#lonlattypesinput)** 
 -   `epsilon` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** The maximum acceptable deviation to be considered equal. (optional, default `0`)
 
 **Examples**
@@ -246,7 +246,7 @@ Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 **Parameters**
 
--   `input` **input** 
+-   `input` **[lonlat.types.input](#lonlattypesinput)** 
 -   `fixed` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)?** The number of decimal places to round to. (optional, default `5`)
 
 **Examples**
