@@ -1,18 +1,17 @@
 sudo: false
 language: node_js
+cache: yarn
 notifications:
   email: false
 node_js:
-  - '6'
+  - '8'
 before_install:
-  - npm i -g codecov
+  - yarn global add codecov
 script:
-  - npm run lint
-  - npm run lint-docs
-  - npm run cover
+  - yarn run cover
   - codecov
 after_success:
-  - npm run semantic-release
+  - yarn run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

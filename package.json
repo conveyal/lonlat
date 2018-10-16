@@ -3,12 +3,13 @@
   "description": "Lon/lat normalization",
   "main": "index.js",
   "scripts": {
-    "cover": "npm test -- --coverage --coverage-paths index.js",
+    "cover": "yarn test --coverage --coverage-paths index.js",
     "generate-docs": "documentation readme index.js --section=API --markdown-toc=true",
-    "lint": "mastarm lint",
+    "lint": "mastarm lint index.js index.test.js",
     "lint-docs": "documentation lint index.js",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "test": "npm run lint && npm run lint-docs && mastarm test"
+    "pretest": "yarn",
+    "semantic-release": "semantic-release",
+    "test": "yarn run lint && yarn run lint-docs && mastarm test"
   },
   "repository": {
     "type": "git",
@@ -28,8 +29,8 @@
   },
   "homepage": "https://github.com/conveyal/lonlat",
   "devDependencies": {
-    "documentation": "^4.0.0-beta.18",
-    "mastarm": "^3.5.1",
-    "semantic-release": "^6.3.2"
+    "documentation": "^8.1.2",
+    "mastarm": "^4.4.0",
+    "semantic-release": "^15.9.17"
   }
 }
