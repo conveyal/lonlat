@@ -4,6 +4,8 @@ const ll = require('./')
 
 const lat = 38.13234
 const lon = 70.01232
+const Z = 9 // Zoom level to use
+const pixel = {x: 91026.70779, y: 50497.02600}
 const lonlat = {lon, lat}
 const point = {x: lon, y: lat}
 const coordinates = [lon, lat]
@@ -137,6 +139,24 @@ describe('lonlat', () => {
           expect(() => ll(data)).toThrowErrorMatchingSnapshot()
         })
       })
+    })
+  })
+
+  describe('pixel', () => {
+    it('can convert to web mercator pixel coordinates', () => {
+      const p = ll.toPixel({lat, lon}, Z)
+      expect(Math.round(p.x)).toBe(Math.round(pixel.x))
+      expect(Math.round(p.y)).toBe(Math.round(pixel.y))
+    })
+
+    it('can convert from web mercator pixel coordinates', () => {
+      const l = ll.fromPixel(pixel, Z)
+      expect(Math.round(l.lat)).toBe(Math.round(lat))
+      expect(Math.round(l.lon)).toBe(Math.round(lon))
+    })
+
+    it('should throw an error if converting a latitude > MAX_LAT', () => {
+      expect(() => ll.toPixel({lat: 86, lon}, Z)).toThrow()
     })
   })
 
