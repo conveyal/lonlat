@@ -23,6 +23,15 @@
  */
 
 /**
+ * (type)
+ *
+ * Object with x/y number values.
+ * @typedef {Object} lonlat.types.point
+ * @property {number} x
+ * @property {number} y
+ */
+
+/**
  * (exception type)
  *
  * An error that is thrown upon providing invalid coordinates.
@@ -285,6 +294,136 @@ module.exports.toString = module.exports.toLonFirstString = function toString (i
 module.exports.toLatFirstString = function toLatFirstString (input) {
   var ll = normalize(input)
   return ll.lat + ',' + ll.lon
+}
+
+/**
+ * Pixel conversions and constants taken from
+ * https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Implementations
+ */
+
+/**
+ * Pixels per tile.
+ */
+var PIXELS_PER_TILE = module.exports.PIXELS_PER_TILE = 256
+
+// 2^z represents the tile number. Scale that by the number of pixels in each tile.
+function zScale (z) {
+  return Math.pow(2, z) * PIXELS_PER_TILE
+}
+
+// Converts from degrees to radians
+function toRadians (degrees) {
+  return degrees * Math.PI / 180
+}
+
+// Converts from radians to degrees.
+function toDegrees (radians) {
+  return radians * 180 / Math.PI
+}
+
+/**
+ * Convert a longitude to it's pixel value given a `zoom` level.
+ *
+ * @param {number} longitude
+ * @param {number} zoom
+ * @return {number} pixel
+ * @example
+ * var xPixel = lonlat.longitudeToPixel(-70, 9) //= 40049.77777777778
+ */
+function longitudeToPixel (longitude, zoom) {
+  return (longitude + 180) / 360 * zScale(zoom)
+}
+module.exports.longitudeToPixel = longitudeToPixel
+
+/**
+ * Convert a latitude to it's pixel value given a `zoom` level.
+ *
+ * @param {number} latitude
+ * @param {number} zoom
+ * @return {number} pixel
+ * @example
+ * var yPixel = lonlat.latitudeToPixel(40, 9) //= 49621.12736343896
+ */
+function latitudeToPixel (latitude, zoom) {
+  const latRad = toRadians(latitude)
+  return (1 -
+    Math.log(Math.tan(latRad) + (1 / Math.cos(latRad))) /
+      Math.PI) / 2 * zScale(zoom)
+}
+module.exports.latitudeToPixel = latitudeToPixel
+
+/**
+ * Maximum Latitude for valid Mercator projection conversion.
+ */
+var MAX_LAT = toDegrees(Math.atan(Math.sinh(Math.PI)))
+
+/**
+ * Convert a coordinate to a pixel.
+ *
+ * @param {lonlat.types.input} input
+ * @param {number} zoom
+ * @return {Object} An object with `x` and `y` attributes representing pixel coordinates
+ * @throws {lonlat.types.InvalidCoordinateException}
+ * @throws {Error} If latitude is above or below `MAX_LAT`
+ * @throws {Error} If `zoom` is undefined.
+ * @example
+ * var pixel = lonlat.toPixel({lon: -70, lat: 40}, 9) //= {x: 40049.77777777778, y:49621.12736343896}
+ */
+module.exports.toPixel = function toPixel (input, zoom) {
+  var ll = normalize(input)
+  if (ll.lat > MAX_LAT || ll.lat < -MAX_LAT) {
+    throw new Error('Pixel conversion only works between ' + MAX_LAT + 'N and -' + MAX_LAT + 'S')
+  }
+
+  return {
+    x: longitudeToPixel(ll.lon, zoom),
+    y: latitudeToPixel(ll.lat, zoom)
+  }
+}
+
+/**
+ * Convert a pixel to it's longitude value given a zoom level.
+ *
+ * @param {number} x
+ * @param {number} zoom
+ * @return {number} longitude
+ * @example
+ * var lon = lonlat.pixelToLongitude(40000, 9) //= -70.13671875
+ */
+function pixelToLongitude (x, zoom) {
+  return x / zScale(zoom) * 360 - 180
+}
+module.exports.pixelToLongitude = pixelToLongitude
+
+/**
+ * Convert a pixel to it's latitude value given a zoom level.
+ *
+ * @param {number} y
+ * @param {number} zoom
+ * @return {number} latitude
+ * @example
+ * var lat = lonlat.pixelToLatitude(50000, 9) //= 39.1982053488948
+ */
+function pixelToLatitude (y, zoom) {
+  var latRad = Math.atan(Math.sinh(Math.PI * (1 - 2 * y / zScale(zoom))))
+  return toDegrees(latRad)
+}
+module.exports.pixelToLatitude = pixelToLatitude
+
+/**
+ * From pixel.
+ *
+ * @param {lonlat.types.point} pixel
+ * @param {number} zoom
+ * @return {lonlat.types.output}
+ * @example
+ * var ll = lonlat.fromPixel({x: 40000, y: 50000}, 9) //= {lon: -70.13671875, lat: 39.1982053488948}
+ */
+module.exports.fromPixel = function fromPixel (pixel, zoom) {
+  return {
+    lon: pixelToLongitude(pixel.x, zoom),
+    lat: pixelToLatitude(pixel.y, zoom)
+  }
 }
 
 function floatize (lonlat) {

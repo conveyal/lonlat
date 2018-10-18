@@ -5,11 +5,12 @@
   "scripts": {
     "cover": "yarn test --coverage --coverage-paths index.js",
     "generate-docs": "documentation readme index.js --section=API --markdown-toc=true",
+    "jest": "mastarm test",
     "lint": "mastarm lint index.js index.test.js",
     "lint-docs": "documentation lint index.js",
     "pretest": "yarn",
     "semantic-release": "semantic-release",
-    "test": "yarn run lint && yarn run lint-docs && mastarm test"
+    "test": "yarn run lint && yarn run lint-docs && yarn run jest"
   },
   "repository": {
     "type": "git",
