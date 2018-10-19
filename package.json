@@ -10,7 +10,8 @@
     "lint-docs": "documentation lint index.js",
     "pretest": "yarn",
     "semantic-release": "semantic-release",
-    "test": "yarn run lint && yarn run lint-docs && yarn run jest"
+    "test": "yarn run lint && yarn run lint-docs && yarn run jest",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,8 @@
   "devDependencies": {
     "documentation": "^8.1.2",
     "mastarm": "^4.4.0",
-    "semantic-release": "^15.9.17"
-  }
+    "semantic-release": "^15.10.3",
+    "travis-deploy-once": "^5.0.9"
+  },
+  "version": "0.0.0-development"
 }

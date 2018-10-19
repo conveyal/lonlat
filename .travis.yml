@@ -1,4 +1,3 @@
-sudo: false
 language: node_js
 cache: yarn
 notifications:
@@ -11,7 +10,7 @@ script:
   - yarn run cover
   - codecov
 after_success:
-  - yarn run semantic-release
+  - yarn run travis-deploy-once "yarn run semantic-release"
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
