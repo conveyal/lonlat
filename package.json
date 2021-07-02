@@ -1,7 +1,7 @@
 {
   "name": "@conveyal/lonlat",
   "description": "Lon/lat normalization",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "cover": "yarn test --coverage --coverage-paths index.js",
     "generate-docs": "documentation readme index.js --section=API --markdown-toc=true",
