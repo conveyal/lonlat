@@ -82,7 +82,7 @@ type Point = {
 
 type GeoJSONPosition = | [number, number]
 
-type LonLatInput = | LonLatOutput | Point | GeoJSONPosition | LatLng | LatLngLiteral | {lat: any, lng: any} | {lat: any, long: any} | {latitude: any, longitude: any}
+export type LonLatInput = | LonLatOutput | Point | GeoJSONPosition | LatLng | LatLngLiteral | {lat: any, lng: any} | {lat: any, long: any} | {latitude: any, longitude: any}
 
 function normalize (unknown: LonLatInput): LonLatOutput {
   if (!unknown) throw new Error('Value must not be null or undefined.')
