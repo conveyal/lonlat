@@ -5,13 +5,13 @@ const ll = require('./')
 const lat = 38.13234
 const lon = 70.01232
 const Z = 9 // Zoom level to use
-const pixel = {x: 91026.70779, y: 50497.02600}
-const lonlat = {lon, lat}
-const point = {x: lon, y: lat}
+const pixel = { x: 91026.70779, y: 50497.026 }
+const lonlat = { lon, lat }
+const point = { x: lon, y: lat }
 const coordinates = [lon, lat]
 const str = `${lon},${lat}`
 const strLatFirst = `${lat},${lon}`
-const latlng = {lat, lng: lon}
+const latlng = { lat, lng: lon }
 
 describe('lonlat', () => {
   describe('print', () => {
@@ -33,7 +33,9 @@ describe('lonlat', () => {
   describe('toLeaflet', () => {
     it('should create leaflet latLng', () => {
       window.L = {
-        latLng: jest.fn((lat, lng) => { return { leaflet_lat: lat, leaflet_lng: lng } })
+        latLng: jest.fn((lat, lng) => {
+          return { leaflet_lat: lat, leaflet_lng: lng }
+        })
       }
 
       expect(ll.toLeaflet('0,0')).toEqual({ leaflet_lat: 0, leaflet_lng: 0 })
@@ -43,19 +45,24 @@ describe('lonlat', () => {
   })
 
   describe('normalization', () => {
-    const testCases = [{
-      calculated: ll(lonlat),
-      description: 'Object with lon and lat keys'
-    }, {
-      calculated: ll(point),
-      description: 'Object with x and y keys'
-    }, {
-      calculated: ll(coordinates),
-      description: 'Array of lon and lat'
-    }, {
-      calculated: ll(str),
-      description: 'String with comma separating lon and lat'
-    }]
+    const testCases = [
+      {
+        calculated: ll(lonlat),
+        description: 'Object with lon and lat keys'
+      },
+      {
+        calculated: ll(point),
+        description: 'Object with x and y keys'
+      },
+      {
+        calculated: ll(coordinates),
+        description: 'Array of lon and lat'
+      },
+      {
+        calculated: ll(str),
+        description: 'String with comma separating lon and lat'
+      }
+    ]
 
     testCases.forEach((test) => {
       it(`should normalize from ${test.description}`, () => {
@@ -65,22 +72,28 @@ describe('lonlat', () => {
   })
 
   describe('translations', () => {
-    const testCases = [{
-      expected: coordinates,
-      method: 'toCoordinates'
-    }, {
-      expected: point,
-      method: 'toPoint'
-    }, {
-      expected: str,
-      method: 'toString'
-    }, {
-      expected: str,
-      method: 'toLonFirstString'
-    }, {
-      expected: strLatFirst,
-      method: 'toLatFirstString'
-    }]
+    const testCases = [
+      {
+        expected: coordinates,
+        method: 'toCoordinates'
+      },
+      {
+        expected: point,
+        method: 'toPoint'
+      },
+      {
+        expected: str,
+        method: 'toString'
+      },
+      {
+        expected: str,
+        method: 'toLonFirstString'
+      },
+      {
+        expected: strLatFirst,
+        method: 'toLatFirstString'
+      }
+    ]
 
     testCases.forEach((test) => {
       it(`should translate using ${test.method}`, () => {
@@ -90,28 +103,38 @@ describe('lonlat', () => {
   })
 
   describe('known type parsing', () => {
-    const testCases = [{
-      calculated: ll.fromLatlng(latlng),
-      description: 'Object with lng and lat keys'
-    }, {
-      calculated: ll.fromCoordinates(coordinates),
-      description: 'Array of lon and lat (fromCoordinates)'
-    }, {
-      calculated: ll.fromGeoJSON(coordinates),
-      description: 'Array of lon and lat (fromGeoJSON)'
-    }, {
-      calculated: ll.fromPoint(point),
-      description: 'Object with x and y keys'
-    }, {
-      calculated: ll.fromString(str),
-      description: 'String with comma separating lon and lat, respectively (fromString)'
-    }, {
-      calculated: ll.fromLonFirstString(str),
-      description: 'String with comma separating lon and lat, respectively (fromLonFirstString)'
-    }, {
-      calculated: ll.fromLatFirstString(strLatFirst),
-      description: 'String with comma separating lat and lon, respectively'
-    }]
+    const testCases = [
+      {
+        calculated: ll.fromLatlng(latlng),
+        description: 'Object with lng and lat keys'
+      },
+      {
+        calculated: ll.fromCoordinates(coordinates),
+        description: 'Array of lon and lat (fromCoordinates)'
+      },
+      {
+        calculated: ll.fromGeoJSON(coordinates),
+        description: 'Array of lon and lat (fromGeoJSON)'
+      },
+      {
+        calculated: ll.fromPoint(point),
+        description: 'Object with x and y keys'
+      },
+      {
+        calculated: ll.fromString(str),
+        description:
+          'String with comma separating lon and lat, respectively (fromString)'
+      },
+      {
+        calculated: ll.fromLonFirstString(str),
+        description:
+          'String with comma separating lon and lat, respectively (fromLonFirstString)'
+      },
+      {
+        calculated: ll.fromLatFirstString(strLatFirst),
+        description: 'String with comma separating lat and lon, respectively'
+      }
+    ]
 
     testCases.forEach((test) => {
       it(`should specifically parse from ${test.description}`, () => {
@@ -144,7 +167,7 @@ describe('lonlat', () => {
 
   describe('pixel', () => {
     it('can convert to web mercator pixel coordinates', () => {
-      const p = ll.toPixel({lat, lon}, Z)
+      const p = ll.toPixel({ lat, lon }, Z)
       expect(Math.round(p.x)).toBe(Math.round(pixel.x))
       expect(Math.round(p.y)).toBe(Math.round(pixel.y))
     })
@@ -156,7 +179,7 @@ describe('lonlat', () => {
     })
 
     it('should throw an error if converting a latitude > MAX_LAT', () => {
-      expect(() => ll.toPixel({lat: 86, lon}, Z)).toThrow()
+      expect(() => ll.toPixel({ lat: 86, lon }, Z)).toThrow()
     })
   })
 
