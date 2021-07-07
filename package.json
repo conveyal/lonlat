@@ -7,10 +7,10 @@
     "generate-docs": "documentation readme index.ts --section=API --markdown-toc=true",
     "jest": "mastarm prepublish index.ts:dist/lonlat.js && mastarm test",
     "lint": "mastarm ts && mastarm lint index.ts index.test.js",
-    "lint-docs": "documentation lint index.ts",
+    "lint-docs": "documentation lint dist/lonlat.js",
     "pretest": "yarn",
     "semantic-release": "semantic-release",
-    "test": "yarn run lint && yarn run lint-docs && yarn run jest"
+    "test": "yarn run lint && yarn run jest && yarn run lint-docs"
   },
   "repository": {
     "type": "git",

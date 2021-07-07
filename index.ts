@@ -488,7 +488,7 @@ module.exports.fromPixel = function fromPixel(
 
 // Can the various ways in which lat/long pairs can be expressed to this
 // method be expressed as a type?
-function floatize(lonlat: Record<string, string>): LonLatOutput {
+function floatize(lonlat: any): LonLatOutput {
   const lon = parseFloatWithAlternates([
     lonlat.lon,
     lonlat.lng,
