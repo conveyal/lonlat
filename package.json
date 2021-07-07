@@ -5,8 +5,8 @@
   "scripts": {
     "cover": "yarn test --coverage --coverage-paths index.ts",
     "generate-docs": "documentation readme index.ts --section=API --markdown-toc=true",
-    "jest": "mastarm test",
-    "lint": "mastarm lint index.ts index.test.js",
+    "jest": "mastarm prepublish index.ts:dist/lonlat.js && mastarm test",
+    "lint": "mastarm ts && mastarm lint index.ts index.test.js",
     "lint-docs": "documentation lint index.ts",
     "pretest": "yarn",
     "semantic-release": "semantic-release",

@@ -4,7 +4,7 @@ exports[`lonlat errors invalid coordinates should throw error when parsing: "-99
 
 exports[`lonlat errors invalid coordinates should throw error when parsing: "0,999" 1`] = `"Invalid latitude value: 999"`;
 
-exports[`lonlat errors invalid coordinates should throw error when parsing: {"lng":1,"latitude":1234} 1`] = `"Invalid latitude value: 1234"`;
+exports[`lonlat errors invalid coordinates should throw error when parsing: {"latitude":1234,"lng":1} 1`] = `"Invalid latitude value: 1234"`;
 
 exports[`lonlat errors invalid coordinates should throw error when parsing: {} 1`] = `"Invalid longitude value: undefined"`;
 

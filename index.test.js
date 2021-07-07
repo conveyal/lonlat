@@ -1,12 +1,15 @@
+/**
+ * @jest-environment jsdom
+ */
 /* globals describe, expect, jest, it */
 
-const ll = require('./')
+const ll = require('./dist/lonlat')
 
 const lat = 38.13234
 const lon = 70.01232
 const Z = 9 // Zoom level to use
 const pixel = { x: 91026.70779, y: 50497.026 }
-const lonlat = { lon, lat }
+const lonlat = { lat, lon }
 const point = { x: lon, y: lat }
 const coordinates = [lon, lat]
 const str = `${lon},${lat}`
@@ -154,7 +157,7 @@ describe('lonlat', () => {
         '0,999',
         {},
         undefined,
-        { lng: 1, latitude: 1234 }
+        { latitude: 1234, lng: 1 }
       ]
 
       badCoords.forEach((data) => {
@@ -179,7 +182,7 @@ describe('lonlat', () => {
     })
 
     it('should throw an error if converting a latitude > MAX_LAT', () => {
-      expect(() => ll.toPixel({ lat: 86, lon }, Z)).toThrow()
+      expect(() => ll.toPixel({ lat: 86, lon: 4 }, Z)).toThrow()
     })
   })
 
