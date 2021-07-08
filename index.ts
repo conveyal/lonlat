@@ -81,12 +81,11 @@ type Point = {
   y: number
 }
 
-type GeoJSONPosition = [number, number]
-
 export type LonLatInput =
   | LonLatOutput
   | Point
-  | GeoJSONPosition
+  | GeoJSON.Position
+  | GeoJSON.Point
   | LatLng
   | LatLngLiteral
   | { lat: number | string; lng: number | string }
@@ -97,6 +96,7 @@ const normalize = function (unknown: LonLatInput): LonLatOutput {
   if (!unknown) throw new Error('Value must not be null or undefined.')
   if (Array.isArray(unknown)) return fromCoordinates(unknown)
   else if (typeof unknown === 'string') return fromString(unknown)
+  else if ('coordinates' in unknown) return fromCoordinates(unknown.coordinates)
   else if (
     'x' in unknown &&
     'y' in unknown &&
@@ -125,7 +125,7 @@ export { normalize }
  var position = lonlat.fromCoordinates([12, 34])   // { lon: 12, lat: 34 }
  position = lonlat.fromGeoJSON([12, 34])           // { lon: 12, lat: 34 }
  */
-const fromCoordinates = function (coordinates: [number, number]): LonLatOutput {
+const fromCoordinates = function (coordinates: GeoJSON.Position): LonLatOutput {
   return floatize({ lat: coordinates[1], lon: coordinates[0] })
 }
 module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
