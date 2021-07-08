@@ -69,6 +69,7 @@
  position = lonlat({})                      // Error: Invalid latitude value: undefined
  position = lonlat(null)                    // Error: Value must not be null or undefined
  */
+
 import type { LatLng, LatLngLiteral } from 'leaflet'
 
 export type LonLatOutput = {
@@ -92,7 +93,7 @@ export type LonLatInput =
   | { lat: number | string; long: number | string }
   | { latitude: number | string; longitude: number | string }
 
-function normalize(unknown: LonLatInput): LonLatOutput {
+const normalize = function (unknown: LonLatInput): LonLatOutput {
   if (!unknown) throw new Error('Value must not be null or undefined.')
   if (Array.isArray(unknown)) return fromCoordinates(unknown)
   else if (typeof unknown === 'string') return fromString(unknown)
@@ -107,6 +108,7 @@ function normalize(unknown: LonLatInput): LonLatOutput {
   return floatize(unknown)
 }
 module.exports = normalize
+export { normalize }
 
 /**
  * <b>aliases:</b> fromGeoJSON<br>
@@ -123,10 +125,11 @@ module.exports = normalize
  var position = lonlat.fromCoordinates([12, 34])   // { lon: 12, lat: 34 }
  position = lonlat.fromGeoJSON([12, 34])           // { lon: 12, lat: 34 }
  */
-function fromCoordinates(coordinates: [number, number]): LonLatOutput {
+const fromCoordinates = function (coordinates: [number, number]): LonLatOutput {
   return floatize({ lat: coordinates[1], lon: coordinates[0] })
 }
 module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
+export { fromCoordinates as fromGeoJSON, fromCoordinates }
 
 /**
  * <b>aliases:</b> fromLeaflet<br>
@@ -142,11 +145,18 @@ module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
  var position = lonlat.fromLatlng({ longitude: 12, latitude: 34 })   // { lon: 12, lat: 34 }
  position = lonlat.fromLeaflet({ lng: 12, lat: 34 })                 // { lon: 12, lat: 34 }
  */
-module.exports.fromLatlng = module.exports.fromLeaflet = function fromLatlng(
-  lonlat: LatLng
+const fromLatlng = function (
+  lonlat:
+    | {
+        longitude: number
+        latitude: number
+      }
+    | { lat: number; lng: number }
 ): LonLatOutput {
   return floatize(lonlat)
 }
+module.exports.fromLatlng = module.exports.fromLeaflet = fromLatlng
+export { fromLatlng as fromLeaflet, fromLatlng }
 
 /**
  * Tries to parse from an object.
@@ -161,10 +171,11 @@ module.exports.fromLatlng = module.exports.fromLeaflet = function fromLatlng(
 
  var position = lonlat.fromPoint({ x: 12, y: 34 })   // { lon: 12, lat: 34 }
  */
-function fromPoint(point: Point): LonLatOutput {
+const fromPoint = function (point: Point): LonLatOutput {
   return floatize({ lat: point.y, lon: point.x })
 }
 module.exports.fromPoint = fromPoint
+export { fromPoint }
 
 /**
  * <b>aliases:</b> fromLonFirstString<br>
@@ -181,11 +192,12 @@ module.exports.fromPoint = fromPoint
  var position = lonlat.fromString('12,34')          // { lon: 12, lat: 34 }
  var position = lonlat.fromLonFirstString('12,34')  // { lon: 12, lat: 34 }
  */
-function fromString(str: string): LonLatOutput {
-  const arr = str.split(',')
+const fromString = function (str: string): LonLatOutput {
+  const arr: Array<string> = str.split(',')
   return floatize({ lat: arr[1], lon: arr[0] })
 }
 module.exports.fromString = module.exports.fromLonFirstString = fromString
+export { fromString as fromLonFirstString, fromString }
 
 /**
  * Tries to parse from a string where the latitude appears before the longitude.
@@ -199,11 +211,12 @@ module.exports.fromString = module.exports.fromLonFirstString = fromString
 
  var position = lonlat.fromLatFirstString('12,34') // { lon: 34, lat: 12 }
  */
-function fromLatFirstString(str: string): LonLatOutput {
-  const arr = str.split(',')
+const fromLatFirstString = function (str: string): LonLatOutput {
+  const arr: Array<string> = str.split(',')
   return floatize({ lat: arr[0], lon: arr[1] })
 }
 module.exports.fromLatFirstString = fromLatFirstString
+export { fromLatFirstString }
 
 /**
  * Determine if two inputs are equal to each other
@@ -218,7 +231,7 @@ module.exports.fromLatFirstString = fromLatFirstString
 
  var isEqual = lonlat.isEqual('12,34', [12, 34])   // true
  */
-module.exports.isEqual = function (
+const isEqual = function (
   lonlat1: LonLatOutput,
   lonlat2: LonLatOutput,
   epsilon: number
@@ -231,6 +244,8 @@ module.exports.isEqual = function (
     Math.abs(lonlat1.lon - lonlat2.lon) <= epsilon
   )
 }
+module.exports.isEqual = isEqual
+export { isEqual }
 
 /**
  * @param  {lonlat.types.input} input
@@ -243,13 +258,12 @@ module.exports.isEqual = function (
 
  var pretty = lonlat.print('12.345678,34')   // '12.34568, 34.00000'
  */
-module.exports.print = function print(
-  input: LonLatInput,
-  fixed: number
-): string {
-  const ll = normalize(input)
+const print = function (input: LonLatInput, fixed: number): string {
+  const ll: LonLatOutput = normalize(input)
   return ll.lon.toFixed(fixed || 5) + ', ' + ll.lat.toFixed(fixed || 5)
 }
+module.exports.print = print
+export { print }
 
 /**
  * <b>aliases:</b> toGeoJSON<br>
@@ -264,12 +278,12 @@ module.exports.print = function print(
 
  var coords = lonlat.toCoordinates('12,34')   // [12, 34]
  */
-module.exports.toCoordinates = module.exports.toGeoJSON =
-  function toCoordinates(input: LonLatInput): [number, number] {
-    const ll = normalize(input)
-    return [ll.lon, ll.lat]
-  }
-
+const toCoordinates = function (input: LonLatInput): [number, number] {
+  const ll: LonLatOutput = normalize(input)
+  return [ll.lon, ll.lat]
+}
+module.exports.toCoordinates = module.exports.toGeoJSON = toCoordinates
+export { toCoordinates as toGeoJSON, toCoordinates }
 /**
  * Translates to {@link http://leafletjs.com/reference-1.0.3.html#latlng|Leaflet LatLng} object.
  * This function requires Leaflet to be installed as a global variable `L` in the window environment.
@@ -282,11 +296,13 @@ module.exports.toCoordinates = module.exports.toGeoJSON =
 
  var position = lonlat.toLeaflet({ lat: 12, long: 34 })   // Leaflet LatLng object
  */
-module.exports.toLeaflet = function toLeaflet(input: LonLatInput): LatLng {
+const toLeaflet = function (input: LonLatInput): LatLng {
   if (!window.L) throw new Error('Leaflet not found.')
-  const ll = normalize(input)
+  const ll: LonLatOutput = normalize(input)
   return window.L.latLng(ll.lat, ll.lon)
 }
+module.exports.toLeaflet = toLeaflet
+export { toLeaflet }
 
 /**
  * Translates to point Object.
@@ -299,10 +315,12 @@ module.exports.toLeaflet = function toLeaflet(input: LonLatInput): LatLng {
 
  var point = lonlat.toPoint('12,34')   // { x: 12, y: 34 }
  */
-module.exports.toPoint = function toPoint(input: LonLatInput): Point {
-  const ll = normalize(input)
+const toPoint = function (input: LonLatInput): Point {
+  const ll: LonLatOutput = normalize(input)
   return { x: ll.lon, y: ll.lat }
 }
+module.exports.toPoint = toPoint
+export { toPoint }
 
 /**
  * <b>aliases:</b> toLonFirstString<br>
@@ -318,12 +336,12 @@ module.exports.toPoint = function toPoint(input: LonLatInput): Point {
  var str = lonlat.toString({ lat: 12, longitude: 34 })          // '34,12'
  var str = lonlat.toLonFirstString({ lat: 12, longitude: 34 })  // '34,12'
  */
-module.exports.toString = module.exports.toLonFirstString = function toString(
-  input: LonLatInput
-): string {
-  const ll = normalize(input)
+const toString = function (input: LonLatInput): string {
+  const ll: LonLatOutput = normalize(input)
   return ll.lon + ',' + ll.lat
 }
+module.exports.toString = module.exports.toLonFirstString = toString
+export { toString as toLonFirstString, toString }
 
 /**
  * Translates to coordinate string where the latitude appears before longitude.
@@ -336,12 +354,11 @@ module.exports.toString = module.exports.toLonFirstString = function toString(
 
  var str = lonlat.toLatFirstString({ lat: 12, longitude: 34 })  // '12,34'
  */
-module.exports.toLatFirstString = function toLatFirstString(
-  input: LonLatInput
-): string {
-  const ll = normalize(input)
+const toLatFirstString = function (input: LonLatInput): string {
+  const ll: LonLatOutput = normalize(input)
   return ll.lat + ',' + ll.lon
 }
+module.exports.toLatFirstString = toLatFirstString
 
 /**
  * Pixel conversions and constants taken from
@@ -351,7 +368,9 @@ module.exports.toLatFirstString = function toLatFirstString(
 /**
  * Pixels per tile.
  */
-const PIXELS_PER_TILE = (module.exports.PIXELS_PER_TILE = 256)
+const PIXELS_PER_TILE = 256
+module.exports.PIXELS_PER_TILE = PIXELS_PER_TILE
+export { PIXELS_PER_TILE }
 
 // 2^z represents the tile number. Scale that by the number of pixels in each tile.
 function zScale(z: number): number {
@@ -377,10 +396,11 @@ function toDegrees(radians: number): number {
  * @example
  * var xPixel = lonlat.longitudeToPixel(-70, 9) //= 40049.77777777778
  */
-function longitudeToPixel(longitude: number, zoom: number): number {
+const longitudeToPixel = function (longitude: number, zoom: number): number {
   return ((longitude + 180) / 360) * zScale(zoom)
 }
 module.exports.longitudeToPixel = longitudeToPixel
+export { longitudeToPixel }
 
 /**
  * Convert a latitude to it's pixel value given a `zoom` level.
@@ -391,14 +411,15 @@ module.exports.longitudeToPixel = longitudeToPixel
  * @example
  * var yPixel = lonlat.latitudeToPixel(40, 9) //= 49621.12736343896
  */
-function latitudeToPixel(latitude: number, zoom: number): number {
-  const latRad = toRadians(latitude)
+const latitudeToPixel = function (latitude: number, zoom: number): number {
+  const latRad: number = toRadians(latitude)
   return (
     ((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2) *
     zScale(zoom)
   )
 }
 module.exports.latitudeToPixel = latitudeToPixel
+export { latitudeToPixel }
 
 /**
  * Maximum Latitude for valid Mercator projection conversion.
@@ -417,11 +438,8 @@ const MAX_LAT = toDegrees(Math.atan(Math.sinh(Math.PI)))
  * @example
  * var pixel = lonlat.toPixel({lon: -70, lat: 40}, 9) //= {x: 40049.77777777778, y:49621.12736343896}
  */
-module.exports.toPixel = function toPixel(
-  input: LonLatInput,
-  zoom: number
-): Point {
-  const ll = normalize(input)
+const toPixel = function (input: LonLatInput, zoom: number): Point {
+  const ll: LonLatOutput = normalize(input)
   if (ll.lat > MAX_LAT || ll.lat < -MAX_LAT) {
     throw new Error(
       'Pixel conversion only works between ' +
@@ -437,6 +455,8 @@ module.exports.toPixel = function toPixel(
     y: latitudeToPixel(ll.lat, zoom)
   }
 }
+module.exports.toPixel = toPixel
+export { toPixel }
 
 /**
  * Convert a pixel to it's longitude value given a zoom level.
@@ -447,10 +467,11 @@ module.exports.toPixel = function toPixel(
  * @example
  * var lon = lonlat.pixelToLongitude(40000, 9) //= -70.13671875
  */
-function pixelToLongitude(x: number, zoom: number): number {
+const pixelToLongitude = function (x: number, zoom: number): number {
   return (x / zScale(zoom)) * 360 - 180
 }
 module.exports.pixelToLongitude = pixelToLongitude
+export { pixelToLongitude }
 
 /**
  * Convert a pixel to it's latitude value given a zoom level.
@@ -461,11 +482,14 @@ module.exports.pixelToLongitude = pixelToLongitude
  * @example
  * var lat = lonlat.pixelToLatitude(50000, 9) //= 39.1982053488948
  */
-function pixelToLatitude(y: number, zoom: number): number {
-  const latRad = Math.atan(Math.sinh(Math.PI * (1 - (2 * y) / zScale(zoom))))
+const pixelToLatitude = function (y: number, zoom: number): number {
+  const latRad: number = Math.atan(
+    Math.sinh(Math.PI * (1 - (2 * y) / zScale(zoom)))
+  )
   return toDegrees(latRad)
 }
 module.exports.pixelToLatitude = pixelToLatitude
+export { pixelToLatitude }
 
 /**
  * From pixel.
@@ -476,19 +500,19 @@ module.exports.pixelToLatitude = pixelToLatitude
  * @example
  * var ll = lonlat.fromPixel({x: 40000, y: 50000}, 9) //= {lon: -70.13671875, lat: 39.1982053488948}
  */
-module.exports.fromPixel = function fromPixel(
-  pixel: Point,
-  zoom: number
-): LonLatOutput {
+const fromPixel = function (pixel: Point, zoom: number): LonLatOutput {
   return {
     lat: pixelToLatitude(pixel.y, zoom),
     lon: pixelToLongitude(pixel.x, zoom)
   }
 }
+module.exports.fromPixel = fromPixel
+export { fromPixel }
 
 // Can the various ways in which lat/long pairs can be expressed to this
 // method be expressed as a type?
-function floatize(lonlat: any): LonLatOutput {
+// eslint-disable-next-line complexity
+function floatize(lonlat: Record<string, unknown>): LonLatOutput {
   const lon = parseFloatWithAlternates([
     lonlat.lon,
     lonlat.lng,
@@ -509,8 +533,8 @@ function floatize(lonlat: any): LonLatOutput {
   return { lat: lat, lon: lon }
 }
 
-function parseFloatWithAlternates(alternates: Array<string>): number | null {
-  if (alternates.length > 0) {
+function parseFloatWithAlternates(alternates: Array<unknown>): number | null {
+  if (Array.isArray(alternates) && alternates.length > 0) {
     const num = parseFloat(alternates[0])
     if (isNaN(num)) {
       return parseFloatWithAlternates(alternates.slice(1))
@@ -520,3 +544,5 @@ function parseFloatWithAlternates(alternates: Array<string>): number | null {
   }
   return null
 }
+
+export default normalize
