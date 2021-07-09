@@ -3,7 +3,7 @@
  */
 /* globals describe, expect, jest, it */
 
-const ll = require('.')
+import * as ll from './index'
 
 const lat = 38.13234
 const lon = 70.01232
@@ -36,6 +36,8 @@ describe('lonlat', () => {
   describe('toLeaflet', () => {
     it('should create leaflet latLng', () => {
       window.L = {
+        // Issue here is caused not by lonlat but by Leaflet
+        // @ts-ignore
         latLng: jest.fn((lat, lng) => {
           return { leaflet_lat: lat, leaflet_lng: lng }
         })

@@ -107,7 +107,6 @@ const normalize = function (unknown: LonLatInput): LonLatOutput {
   }
   return floatize(unknown)
 }
-module.exports = normalize
 export { normalize }
 
 /**
@@ -128,7 +127,6 @@ export { normalize }
 const fromCoordinates = function (coordinates: GeoJSON.Position): LonLatOutput {
   return floatize({ lat: coordinates[1], lon: coordinates[0] })
 }
-module.exports.fromCoordinates = module.exports.fromGeoJSON = fromCoordinates
 export { fromCoordinates as fromGeoJSON, fromCoordinates }
 
 /**
@@ -155,7 +153,6 @@ const fromLatlng = function (
 ): LonLatOutput {
   return floatize(lonlat)
 }
-module.exports.fromLatlng = module.exports.fromLeaflet = fromLatlng
 export { fromLatlng as fromLeaflet, fromLatlng }
 
 /**
@@ -174,7 +171,6 @@ export { fromLatlng as fromLeaflet, fromLatlng }
 const fromPoint = function (point: Point): LonLatOutput {
   return floatize({ lat: point.y, lon: point.x })
 }
-module.exports.fromPoint = fromPoint
 export { fromPoint }
 
 /**
@@ -196,7 +192,6 @@ const fromString = function (str: string): LonLatOutput {
   const arr: Array<string> = str.split(',')
   return floatize({ lat: arr[1], lon: arr[0] })
 }
-module.exports.fromString = module.exports.fromLonFirstString = fromString
 export { fromString as fromLonFirstString, fromString }
 
 /**
@@ -215,7 +210,6 @@ const fromLatFirstString = function (str: string): LonLatOutput {
   const arr: Array<string> = str.split(',')
   return floatize({ lat: arr[0], lon: arr[1] })
 }
-module.exports.fromLatFirstString = fromLatFirstString
 export { fromLatFirstString }
 
 /**
@@ -244,7 +238,6 @@ const isEqual = function (
     Math.abs(lonlat1.lon - lonlat2.lon) <= epsilon
   )
 }
-module.exports.isEqual = isEqual
 export { isEqual }
 
 /**
@@ -258,11 +251,10 @@ export { isEqual }
 
  var pretty = lonlat.print('12.345678,34')   // '12.34568, 34.00000'
  */
-const print = function (input: LonLatInput, fixed: number): string {
+const print = function (input: LonLatInput, fixed?: number): string {
   const ll: LonLatOutput = normalize(input)
   return ll.lon.toFixed(fixed || 5) + ', ' + ll.lat.toFixed(fixed || 5)
 }
-module.exports.print = print
 export { print }
 
 /**
@@ -282,7 +274,6 @@ const toCoordinates = function (input: LonLatInput): [number, number] {
   const ll: LonLatOutput = normalize(input)
   return [ll.lon, ll.lat]
 }
-module.exports.toCoordinates = module.exports.toGeoJSON = toCoordinates
 export { toCoordinates as toGeoJSON, toCoordinates }
 /**
  * Translates to {@link http://leafletjs.com/reference-1.0.3.html#latlng|Leaflet LatLng} object.
@@ -301,7 +292,6 @@ const toLeaflet = function (input: LonLatInput): LatLng {
   const ll: LonLatOutput = normalize(input)
   return window.L.latLng(ll.lat, ll.lon)
 }
-module.exports.toLeaflet = toLeaflet
 export { toLeaflet }
 
 /**
@@ -319,7 +309,6 @@ const toPoint = function (input: LonLatInput): Point {
   const ll: LonLatOutput = normalize(input)
   return { x: ll.lon, y: ll.lat }
 }
-module.exports.toPoint = toPoint
 export { toPoint }
 
 /**
@@ -340,7 +329,6 @@ const toString = function (input: LonLatInput): string {
   const ll: LonLatOutput = normalize(input)
   return ll.lon + ',' + ll.lat
 }
-module.exports.toString = module.exports.toLonFirstString = toString
 export { toString as toLonFirstString, toString }
 
 /**
@@ -358,7 +346,7 @@ const toLatFirstString = function (input: LonLatInput): string {
   const ll: LonLatOutput = normalize(input)
   return ll.lat + ',' + ll.lon
 }
-module.exports.toLatFirstString = toLatFirstString
+export { toLatFirstString }
 
 /**
  * Pixel conversions and constants taken from
@@ -369,7 +357,6 @@ module.exports.toLatFirstString = toLatFirstString
  * Pixels per tile.
  */
 const PIXELS_PER_TILE = 256
-module.exports.PIXELS_PER_TILE = PIXELS_PER_TILE
 export { PIXELS_PER_TILE }
 
 // 2^z represents the tile number. Scale that by the number of pixels in each tile.
@@ -399,7 +386,6 @@ function toDegrees(radians: number): number {
 const longitudeToPixel = function (longitude: number, zoom: number): number {
   return ((longitude + 180) / 360) * zScale(zoom)
 }
-module.exports.longitudeToPixel = longitudeToPixel
 export { longitudeToPixel }
 
 /**
@@ -418,7 +404,6 @@ const latitudeToPixel = function (latitude: number, zoom: number): number {
     zScale(zoom)
   )
 }
-module.exports.latitudeToPixel = latitudeToPixel
 export { latitudeToPixel }
 
 /**
@@ -455,7 +440,6 @@ const toPixel = function (input: LonLatInput, zoom: number): Point {
     y: latitudeToPixel(ll.lat, zoom)
   }
 }
-module.exports.toPixel = toPixel
 export { toPixel }
 
 /**
@@ -470,7 +454,6 @@ export { toPixel }
 const pixelToLongitude = function (x: number, zoom: number): number {
   return (x / zScale(zoom)) * 360 - 180
 }
-module.exports.pixelToLongitude = pixelToLongitude
 export { pixelToLongitude }
 
 /**
@@ -488,7 +471,6 @@ const pixelToLatitude = function (y: number, zoom: number): number {
   )
   return toDegrees(latRad)
 }
-module.exports.pixelToLatitude = pixelToLatitude
 export { pixelToLatitude }
 
 /**
@@ -506,7 +488,6 @@ const fromPixel = function (pixel: Point, zoom: number): LonLatOutput {
     lon: pixelToLongitude(pixel.x, zoom)
   }
 }
-module.exports.fromPixel = fromPixel
 export { fromPixel }
 
 // Can the various ways in which lat/long pairs can be expressed to this
@@ -544,5 +525,3 @@ function parseFloatWithAlternates(alternates: Array<unknown>): number | null {
   }
   return null
 }
-
-export default normalize

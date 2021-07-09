@@ -9,7 +9,7 @@
     "cover": "yarn jest --coverage --collectCoverageFrom=dist/index.js",
     "generate-docs": "documentation readme index.ts --parse-extension ts --section=API --markdown-toc=true",
     "jest": "tsdx test",
-    "lint": "tsdx lint index.ts index.test.js",
+    "lint": "tsdx lint index.ts index.test.ts",
     "lint-docs": "documentation lint index.ts",
     "prepare": "tsdx build -i index.ts --target node",
     "pretest": "yarn",
