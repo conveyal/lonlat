@@ -1,13 +1,17 @@
 {
   "name": "@conveyal/lonlat",
   "description": "Lon/lat normalization",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "module": "dist/lonlat.esm.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "cover": "yarn test --coverage --coverage-paths index.ts",
-    "generate-docs": "documentation readme index.ts --section=API --markdown-toc=true",
-    "jest": "mastarm prepublish index.ts:dist/lonlat.js && mastarm test",
-    "lint": "mastarm ts && mastarm lint index.ts index.test.js",
-    "lint-docs": "documentation lint dist/lonlat.js",
+    "build": "tsdx build -i index.ts --target node",
+    "cover": "yarn jest --coverage --collectCoverageFrom=index.ts",
+    "generate-docs": "documentation readme index.ts --parse-extension ts --section=API --markdown-toc=true",
+    "jest": "tsdx test",
+    "lint": "tsdx lint index.ts index.test.js",
+    "lint-docs": "documentation lint index.ts",
+    "prepare": "tsdx build -i index.ts --target node",
     "pretest": "yarn",
     "semantic-release": "semantic-release",
     "test": "yarn run lint && yarn run jest && yarn run lint-docs"
@@ -32,11 +36,22 @@
   "devDependencies": {
     "@types/leaflet": "^1.7.3",
     "@types/node": "^15.12.5",
-    "documentation": "^8.1.2",
-    "mastarm": "^4.4.0",
+    "documentation": "^13.2.5",
+    "eslint": "^7.30.0",
     "semantic-release": "^15.10.3",
     "travis-deploy-once": "^5.0.9",
-    "typescript": "^4.3.5"
+    "tsdx": "^0.14.1"
+  },
+  "resolutions": {
+    "**/@typescript-eslint/eslint-plugin": "^4.28.2",
+    "**/@typescript-eslint/parser": "^4.28.2",
+    "eslint": "7.30.0",
+    "prettier": "^2.3.2"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none"
   },
   "version": "0.0.0-development"
 }
