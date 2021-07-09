@@ -6,7 +6,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsdx build -i index.ts --target node",
-    "cover": "yarn jest --coverage --collectCoverageFrom=index.ts",
+    "cover": "yarn jest --coverage --collectCoverageFrom=dist/index.js",
     "generate-docs": "documentation readme index.ts --parse-extension ts --section=API --markdown-toc=true",
     "jest": "tsdx test",
     "lint": "tsdx lint index.ts index.test.js",
