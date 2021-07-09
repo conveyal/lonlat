@@ -3,7 +3,7 @@
  */
 /* globals describe, expect, jest, it */
 
-const ll = require('./dist/lonlat.js')
+const ll = require('.')
 
 const lat = 38.13234
 const lon = 70.01232
