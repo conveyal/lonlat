@@ -91,6 +91,7 @@ export type LonLatInput =
   | { lat: number | string; lng: number | string }
   | { lat: number | string; long: number | string }
   | { latitude: number | string; longitude: number | string }
+  | string
 
 const normalize = function (unknown: LonLatInput): LonLatOutput {
   if (!unknown) throw new Error('Value must not be null or undefined.')
@@ -108,6 +109,7 @@ const normalize = function (unknown: LonLatInput): LonLatOutput {
   return floatize(unknown)
 }
 export { normalize }
+export default normalize
 
 /**
  * <b>aliases:</b> fromGeoJSON<br>
@@ -226,9 +228,9 @@ export { fromLatFirstString }
  var isEqual = lonlat.isEqual('12,34', [12, 34])   // true
  */
 const isEqual = function (
-  lonlat1: LonLatOutput,
-  lonlat2: LonLatOutput,
-  epsilon: number
+  lonlat1: LonLatInput,
+  lonlat2: LonLatInput,
+  epsilon?: number
 ): boolean {
   lonlat1 = normalize(lonlat1)
   lonlat2 = normalize(lonlat2)

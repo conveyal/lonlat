@@ -52,19 +52,19 @@ describe('lonlat', () => {
   describe('normalization', () => {
     const testCases = [
       {
-        calculated: ll(lonlat),
+        calculated: ll.normalize(lonlat),
         description: 'Object with lon and lat keys'
       },
       {
-        calculated: ll(point),
+        calculated: ll.normalize(point),
         description: 'Object with x and y keys'
       },
       {
-        calculated: ll(coordinates),
+        calculated: ll.normalize(coordinates),
         description: 'Array of lon and lat'
       },
       {
-        calculated: ll(str),
+        calculated: ll.normalize(str),
         description: 'String with comma separating lon and lat'
       }
     ]
@@ -164,7 +164,9 @@ describe('lonlat', () => {
 
       badCoords.forEach((data) => {
         it(`should throw error when parsing: ${JSON.stringify(data)}`, () => {
-          expect(() => ll(data)).toThrowErrorMatchingSnapshot()
+          // This exception is prevented by Typescript! So need to disable it to allow the error to throw
+          //@ts-ignore
+          expect(() => ll.normalize(data)).toThrowErrorMatchingSnapshot()
         })
       })
     })
@@ -190,8 +192,8 @@ describe('lonlat', () => {
 
   describe('issues', () => {
     it('#3 - Does not parse coordinates with 0 for lat or lon', () => {
-      expect(ll({ lat: 0, lng: 0 })).toEqual({ lat: 0, lon: 0 })
-      expect(ll({ x: 0, y: 0 })).toEqual({ lat: 0, lon: 0 })
+      expect(ll.normalize({ lat: 0, lng: 0 })).toEqual({ lat: 0, lon: 0 })
+      expect(ll.normalize({ x: 0, y: 0 })).toEqual({ lat: 0, lon: 0 })
     })
   })
 })
