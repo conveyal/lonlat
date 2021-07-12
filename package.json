@@ -14,7 +14,7 @@
     "prepare": "tsdx build -i index.ts --target node",
     "pretest": "yarn",
     "semantic-release": "semantic-release",
-    "test": "yarn run lint && yarn run jest && yarn run lint-docs"
+    "test": "yarn run jest && yarn run lint-docs"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,6 @@
     "documentation": "^13.2.5",
     "eslint": "^7.30.0",
     "semantic-release": "^15.10.3",
-    "travis-deploy-once": "^5.0.9",
     "tsdx": "^0.14.1"
   },
   "resolutions": {
