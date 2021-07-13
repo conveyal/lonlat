@@ -18,6 +18,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install npm packages using cache
         uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --frozen-lockfile --network-concurrency 1
       - name: Run Lint
         run: yarn lint
       - name: Run Tests
