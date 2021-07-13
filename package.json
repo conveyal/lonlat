@@ -41,7 +41,7 @@
     "documentation": "^13.2.5",
     "eslint": "^7.30.0",
     "semantic-release": "^17.4.4",
-    "tsdx": "https://github.com/ibi-group/tsdx"
+    "tsdx": "https://github.com/ibi-group/tsdx#v0.15.0"
   },
   "prettier": {
     "semi": false,

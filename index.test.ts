@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /**
  * @jest-environment jsdom
  */
 /* globals describe, expect, jest, it */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import * as ll from './index'
 

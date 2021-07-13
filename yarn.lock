@@ -4026,6 +4026,14 @@ eslint-plugin-es@^3.0.0:
     eslint-utils "^2.0.0"
     regexpp "^3.0.0"
 
+eslint-plugin-flowtype@^5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-5.8.0.tgz#35b55e4ce559b90efbe913ed33630e391e301481"
+  integrity sha512-feK1xnUTsMSNTOw9jFw7aVgZl7Ep+ghpta/YEoaV6jbXU6Yso30B7BIj9ObHLzZ5TFJL7D98az080wfykLCrcw==
+  dependencies:
+    lodash "^4.17.15"
+    string-natural-compare "^3.0.1"
+
 eslint-plugin-import@^2.18.2:
   version "2.23.4"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.23.4.tgz#8dceb1ed6b73e46e50ec9a5bb2411b645e7d3d97"
@@ -9604,6 +9612,11 @@ string-length@^4.0.1:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
 
+string-natural-compare@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/string-natural-compare/-/string-natural-compare-3.0.1.tgz#7a42d58474454963759e8e8b7ae63d71c1e7fdf4"
+  integrity sha512-n3sPwynL1nwKi3WJ6AIsClwBMa0zTi54fn2oLU6ndfTSIO05xaznjSf15PcBZU6FNWbmN5Q6cxT4V5hGvB4taw==
+
 string-template@~0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/string-template/-/string-template-0.2.1.tgz#42932e598a352d01fc22ec3367d9d84eec6c9add"
@@ -10083,9 +10096,9 @@ tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-"tsdx@https://github.com/ibi-group/tsdx":
-  version "0.14.1"
-  resolved "https://github.com/ibi-group/tsdx#234b4525b41f253d63d41c7669e06bed16754e17"
+"tsdx@https://github.com/ibi-group/tsdx#v0.15.0":
+  version "0.15.0"
+  resolved "https://github.com/ibi-group/tsdx#f260b9347e6bd2096a9a5048761e12e2220b8dcb"
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/eslint-parser" "^7.14.7"
@@ -10118,6 +10131,7 @@ tsconfig-paths@^3.9.0:
     eslint-config-react-app "^6.0.0"
     eslint-config-standard "^16.0.3"
     eslint-config-standard-jsx "^10.0.0"
+    eslint-plugin-flowtype "^5.8.0"
     eslint-plugin-import "^2.18.2"
     eslint-plugin-jest "^24.3.6"
     eslint-plugin-jsx-a11y "^6.2.3"
@@ -10149,7 +10163,7 @@ tsconfig-paths@^3.9.0:
     tiny-glob "^0.2.6"
     ts-jest "^27.0.3"
     tslib "^1.9.3"
-    typescript "^4.3.5"
+    typescript "3.9.9"
 
 tslib@2.0.1:
   version "2.0.1"
@@ -10251,10 +10265,10 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
-  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
+typescript@3.9.9:
+  version "3.9.9"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.9.tgz#e69905c54bc0681d0518bd4d587cc6f2d0b1a674"
+  integrity sha512-kdMjTiekY+z/ubJCATUPlRDl39vXYiMV9iyeMuEuXZh2we6zz80uovNN2WlAxmmdE/Z/YQe+EbOEXB5RHEED3w==
 
 uglify-js@^3.1.4:
   version "3.13.10"
