@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /**
  * @jest-environment jsdom
  */
@@ -165,7 +166,7 @@ describe('lonlat', () => {
       badCoords.forEach((data) => {
         it(`should throw error when parsing: ${JSON.stringify(data)}`, () => {
           // This exception is prevented by Typescript! So need to disable it to allow the error to throw
-          //@ts-ignore
+          // @ts-ignore
           expect(() => ll.normalize(data)).toThrowErrorMatchingSnapshot()
         })
       })

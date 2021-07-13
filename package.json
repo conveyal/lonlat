@@ -6,7 +6,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsdx build -i index.ts --target node",
-    "cover": "yarn jest --coverage --collectCoverageFrom=dist/index.js",
+    "cover": "yarn jest --coverage --collectCoverageFrom=index.ts",
     "generate-docs": "documentation readme index.ts --parse-extension ts --section=API --markdown-toc=true",
     "jest": "tsdx test",
     "lint": "tsdx lint index.ts index.test.ts",
@@ -14,7 +14,8 @@
     "prepare": "tsdx build -i index.ts --target node",
     "pretest": "yarn",
     "semantic-release": "semantic-release",
-    "test": "yarn run jest && yarn run lint-docs"
+    "test": "yarn run jest && yarn run lint-docs",
+    "commit": "tsdx commit"
   },
   "repository": {
     "type": "git",
@@ -40,13 +41,7 @@
     "documentation": "^13.2.5",
     "eslint": "^7.30.0",
     "semantic-release": "^15.10.3",
-    "tsdx": "^0.14.1"
-  },
-  "resolutions": {
-    "**/@typescript-eslint/eslint-plugin": "^4.28.2",
-    "**/@typescript-eslint/parser": "^4.28.2",
-    "eslint": "7.30.0",
-    "prettier": "^2.3.2"
+    "tsdx": "https://github.com/ibi-group/tsdx"
   },
   "prettier": {
     "semi": false,
