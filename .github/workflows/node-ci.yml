@@ -1,10 +1,6 @@
 name: Node.js CI
 
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -31,6 +27,7 @@ jobs:
 
       # at this point, the build is successful
       - name: Semantic Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
