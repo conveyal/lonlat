@@ -20,9 +20,7 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           install-command: yarn --frozen-lockfile --network-concurrency 1
-      - name: Run Lint
-        run: yarn lint
-      - name: Run Tests
+      - name: Run Lint and Tests
         run: yarn test
       - name: Build Package
         run: yarn build

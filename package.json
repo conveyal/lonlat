@@ -14,7 +14,7 @@
     "prepare": "tsdx build -i index.ts --target node",
     "pretest": "yarn",
     "semantic-release": "semantic-release",
-    "test": "yarn run jest && yarn run lint-docs",
+    "test": "yarn run lint && yarn run jest && yarn run lint-docs",
     "commit": "tsdx commit"
   },
   "repository": {
