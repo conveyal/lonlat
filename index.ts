@@ -81,6 +81,13 @@ type Point = {
   y: number
 }
 
+type LeafletLatLng =
+  | {
+      longitude: number
+      latitude: number
+    }
+  | { lat: number; lng: number }
+
 export type LonLatInput =
   | LonLatOutput
   | Point
@@ -93,7 +100,7 @@ export type LonLatInput =
   | { latitude: number | string; longitude: number | string }
   | string
 
-export const normalize = function (unknown: LonLatInput): LonLatOutput {
+export function normalize(unknown: LonLatInput): LonLatOutput {
   if (!unknown) throw new Error('Value must not be null or undefined.')
   if (Array.isArray(unknown)) return fromCoordinates(unknown)
   else if (typeof unknown === 'string') return fromString(unknown)
@@ -125,9 +132,7 @@ export default normalize
  var position = lonlat.fromCoordinates([12, 34])   // { lon: 12, lat: 34 }
  position = lonlat.fromGeoJSON([12, 34])           // { lon: 12, lat: 34 }
  */
-export const fromCoordinates = function (
-  coordinates: GeoJSON.Position
-): LonLatOutput {
+export function fromCoordinates(coordinates: GeoJSON.Position): LonLatOutput {
   return floatize({ lat: coordinates[1], lon: coordinates[0] })
 }
 export { fromCoordinates as fromGeoJSON }
@@ -146,14 +151,7 @@ export { fromCoordinates as fromGeoJSON }
  var position = lonlat.fromLatlng({ longitude: 12, latitude: 34 })   // { lon: 12, lat: 34 }
  position = lonlat.fromLeaflet({ lng: 12, lat: 34 })                 // { lon: 12, lat: 34 }
  */
-export const fromLatlng = function (
-  lonlat:
-    | {
-        longitude: number
-        latitude: number
-      }
-    | { lat: number; lng: number }
-): LonLatOutput {
+export function fromLatlng(lonlat: LeafletLatLng): LonLatOutput {
   return floatize(lonlat)
 }
 export { fromLatlng as fromLeaflet }
@@ -171,7 +169,7 @@ export { fromLatlng as fromLeaflet }
 
  var position = lonlat.fromPoint({ x: 12, y: 34 })   // { lon: 12, lat: 34 }
  */
-export const fromPoint = function (point: Point): LonLatOutput {
+export function fromPoint(point: Point): LonLatOutput {
   return floatize({ lat: point.y, lon: point.x })
 }
 
@@ -190,7 +188,7 @@ export const fromPoint = function (point: Point): LonLatOutput {
  var position = lonlat.fromString('12,34')          // { lon: 12, lat: 34 }
  var position = lonlat.fromLonFirstString('12,34')  // { lon: 12, lat: 34 }
  */
-export const fromString = function (str: string): LonLatOutput {
+export function fromString(str: string): LonLatOutput {
   const arr: Array<string> = str.split(',')
   return floatize({ lat: arr[1], lon: arr[0] })
 }
@@ -208,7 +206,7 @@ export { fromString as fromLonFirstString }
 
  var position = lonlat.fromLatFirstString('12,34') // { lon: 34, lat: 12 }
  */
-export const fromLatFirstString = function (str: string): LonLatOutput {
+export function fromLatFirstString(str: string): LonLatOutput {
   const arr: Array<string> = str.split(',')
   return floatize({ lat: arr[0], lon: arr[1] })
 }
@@ -226,7 +224,7 @@ export const fromLatFirstString = function (str: string): LonLatOutput {
 
  var isEqual = lonlat.isEqual('12,34', [12, 34])   // true
  */
-export const isEqual = function (
+export function isEqual(
   lonlat1: LonLatInput,
   lonlat2: LonLatInput,
   epsilon?: number
@@ -251,7 +249,7 @@ export const isEqual = function (
 
  var pretty = lonlat.print('12.345678,34')   // '12.34568, 34.00000'
  */
-export const print = function (input: LonLatInput, fixed?: number): string {
+export function print(input: LonLatInput, fixed?: number): string {
   const ll: LonLatOutput = normalize(input)
   return ll.lon.toFixed(fixed || 5) + ', ' + ll.lat.toFixed(fixed || 5)
 }
@@ -269,7 +267,7 @@ export const print = function (input: LonLatInput, fixed?: number): string {
 
  var coords = lonlat.toCoordinates('12,34')   // [12, 34]
  */
-export const toCoordinates = function (input: LonLatInput): [number, number] {
+export function toCoordinates(input: LonLatInput): [number, number] {
   const ll: LonLatOutput = normalize(input)
   return [ll.lon, ll.lat]
 }
@@ -286,7 +284,7 @@ export { toCoordinates as toGeoJSON }
 
  var position = lonlat.toLeaflet({ lat: 12, long: 34 })   // Leaflet LatLng object
  */
-export const toLeaflet = function (input: LonLatInput): LatLng {
+export function toLeaflet(input: LonLatInput): LatLng {
   if (!window.L) throw new Error('Leaflet not found.')
   const ll: LonLatOutput = normalize(input)
   return window.L.latLng(ll.lat, ll.lon)
@@ -303,7 +301,7 @@ export const toLeaflet = function (input: LonLatInput): LatLng {
 
  var point = lonlat.toPoint('12,34')   // { x: 12, y: 34 }
  */
-export const toPoint = function (input: LonLatInput): Point {
+export function toPoint(input: LonLatInput): Point {
   const ll: LonLatOutput = normalize(input)
   return { x: ll.lon, y: ll.lat }
 }
@@ -322,7 +320,7 @@ export const toPoint = function (input: LonLatInput): Point {
  var str = lonlat.toString({ lat: 12, longitude: 34 })          // '34,12'
  var str = lonlat.toLonFirstString({ lat: 12, longitude: 34 })  // '34,12'
  */
-export const toString = function (input: LonLatInput): string {
+export function toString(input: LonLatInput): string {
   const ll: LonLatOutput = normalize(input)
   return ll.lon + ',' + ll.lat
 }
@@ -339,7 +337,7 @@ export { toString as toLonFirstString }
 
  var str = lonlat.toLatFirstString({ lat: 12, longitude: 34 })  // '12,34'
  */
-export const toLatFirstString = function (input: LonLatInput): string {
+export function toLatFirstString(input: LonLatInput): string {
   const ll: LonLatOutput = normalize(input)
   return ll.lat + ',' + ll.lon
 }
@@ -378,10 +376,7 @@ function toDegrees(radians: number): number {
  * @example
  * var xPixel = lonlat.longitudeToPixel(-70, 9) //= 40049.77777777778
  */
-export const longitudeToPixel = function (
-  longitude: number,
-  zoom: number
-): number {
+export function longitudeToPixel(longitude: number, zoom: number): number {
   return ((longitude + 180) / 360) * zScale(zoom)
 }
 
@@ -394,10 +389,7 @@ export const longitudeToPixel = function (
  * @example
  * var yPixel = lonlat.latitudeToPixel(40, 9) //= 49621.12736343896
  */
-export const latitudeToPixel = function (
-  latitude: number,
-  zoom: number
-): number {
+export function latitudeToPixel(latitude: number, zoom: number): number {
   const latRad: number = toRadians(latitude)
   return (
     ((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2) *
@@ -422,7 +414,7 @@ const MAX_LAT = toDegrees(Math.atan(Math.sinh(Math.PI)))
  * @example
  * var pixel = lonlat.toPixel({lon: -70, lat: 40}, 9) //= {x: 40049.77777777778, y:49621.12736343896}
  */
-export const toPixel = function (input: LonLatInput, zoom: number): Point {
+export function toPixel(input: LonLatInput, zoom: number): Point {
   const ll: LonLatOutput = normalize(input)
   if (ll.lat > MAX_LAT || ll.lat < -MAX_LAT) {
     throw new Error(
@@ -449,7 +441,7 @@ export const toPixel = function (input: LonLatInput, zoom: number): Point {
  * @example
  * var lon = lonlat.pixelToLongitude(40000, 9) //= -70.13671875
  */
-export const pixelToLongitude = function (x: number, zoom: number): number {
+export function pixelToLongitude(x: number, zoom: number): number {
   return (x / zScale(zoom)) * 360 - 180
 }
 
@@ -462,7 +454,7 @@ export const pixelToLongitude = function (x: number, zoom: number): number {
  * @example
  * var lat = lonlat.pixelToLatitude(50000, 9) //= 39.1982053488948
  */
-export const pixelToLatitude = function (y: number, zoom: number): number {
+export function pixelToLatitude(y: number, zoom: number): number {
   const latRad: number = Math.atan(
     Math.sinh(Math.PI * (1 - (2 * y) / zScale(zoom)))
   )
@@ -478,7 +470,7 @@ export const pixelToLatitude = function (y: number, zoom: number): number {
  * @example
  * var ll = lonlat.fromPixel({x: 40000, y: 50000}, 9) //= {lon: -70.13671875, lat: 39.1982053488948}
  */
-export const fromPixel = function (pixel: Point, zoom: number): LonLatOutput {
+export function fromPixel(pixel: Point, zoom: number): LonLatOutput {
   return {
     lat: pixelToLatitude(pixel.y, zoom),
     lon: pixelToLongitude(pixel.x, zoom)

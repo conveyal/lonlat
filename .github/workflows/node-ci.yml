@@ -6,9 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+    with:
+      node-version: 14.x
 
     steps:
       - uses: actions/checkout@v2
