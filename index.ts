@@ -498,7 +498,7 @@ function floatize(lonlat: Record<string, unknown>): LonLatOutput {
       'Invalid latitude value: ' + (lonlat.lat || lonlat.latitude)
     )
   }
-  return { lat: lat, lon: lon }
+  return { lat, lon }
 }
 
 function parseFloatWithAlternates(alternates: Array<unknown>): number | null {
