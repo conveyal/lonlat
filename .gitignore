@@ -23,6 +23,7 @@ tmp
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+dist/
 
 # Dependency directory
 node_modules
@@ -32,3 +33,9 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+
+# MacOS
+.DS_Store
+
+# Typescript type files
+*.d.ts
